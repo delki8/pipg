@@ -40,16 +40,16 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 					@Override
 					public void run(){
 						Boolean euDevoContinuarBuscando = true;
-						Integer nPagina = 1;
+						Integer noPagina = 1;
 						while (euDevoContinuarBuscando){
 							ArrayList<Boletim> boletinsTemp = TrataConteudo
-									.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL + "&d=" + nPagina);
+									.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL + "&d=" + noPagina);
 							if (boletinsTemp != null && boletinsTemp.size() > 0){
 								boletins.addAll(boletinsTemp);  
 							}else{
 								euDevoContinuarBuscando = false;
 							}
-							nPagina++;
+							noPagina++;
 						}
 						for (Boletim boletim : boletins) {
 							Log.i("boletim", boletim.getPastoral() + " " + boletim.getDataPublicacao());
