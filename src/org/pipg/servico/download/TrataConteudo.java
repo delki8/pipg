@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +14,7 @@ import org.jsoup.select.Elements;
 import org.pipg.bean.Boletim;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public final class TrataConteudo {
 	
@@ -35,6 +38,7 @@ public final class TrataConteudo {
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
 					boletim.setDataPublicacao(sdf.parse(p.text().trim()));
+					boletim.setDataDoBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
 				}
 				
 				if (boletim.getPastoral() != null 
@@ -49,5 +53,18 @@ public final class TrataConteudo {
 			Log.e("ERRO", "Erro de conversão de data: " + e.getMessage());
 		}
 		return boletins;
+	}
+	
+	protected static Date encontraProximoDomingo(Date dataDePublicacao) {
+		Date domingoRetorno = null;
+		Calendar domingoDepoisDaPublicacao = Calendar.getInstance();
+		domingoDepoisDaPublicacao.setTime(dataDePublicacao);
+		
+		while (domingoDepoisDaPublicacao.DAY_OF_WEEK != 1){
+			domingoDepoisDaPublicacao.add(Calendar.DAY_OF_MONTH, 1);
+			
+		}
+		domingoRetorno = new Date(domingoDepoisDaPublicacao.getTimeInMillis());
+		return domingoRetorno;
 	}
 }
