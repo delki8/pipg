@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,6 +37,9 @@ public final class TrataConteudo {
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
 					boletim.setDataPublicacao(sdf.parse(p.text().trim()));
+					Date data = encontraProximoDomingo(boletim.getDataPublicacao());
+					System.out.println(data);
+//					boletim.setDataDoBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
 				}
 				
 				if (boletim.getPastoral() != null 
@@ -49,5 +54,18 @@ public final class TrataConteudo {
 			Log.e("ERRO", "Erro de conversão de data: " + e.getMessage());
 		}
 		return boletins;
+	}
+	
+	protected static Date encontraProximoDomingo(Date dataDePublicacao){
+		Date dataDomingo = null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dataDePublicacao);
+		
+		while(cal.DAY_OF_WEEK != 1){
+			cal.add(Calendar.DATE, 1);
+			Log.i("DEBUG", ((Integer)cal.DATE).toString());
+		}
+		dataDomingo = new Date(cal.getTimeInMillis());
+		return dataDomingo;
 	}
 }
