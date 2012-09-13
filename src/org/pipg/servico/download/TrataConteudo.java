@@ -37,9 +37,7 @@ public final class TrataConteudo {
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
 					boletim.setDataPublicacao(sdf.parse(p.text().trim()));
-					Date data = encontraProximoDomingo(boletim.getDataPublicacao());
-					System.out.println(data);
-//					boletim.setDataDoBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
+					boletim.setDataDoBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
 				}
 				
 				if (boletim.getPastoral() != null 
@@ -61,9 +59,9 @@ public final class TrataConteudo {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dataDePublicacao);
 		
-		while(cal.DAY_OF_WEEK != 1){
+		while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
+			dataDomingo = new Date(cal.getTimeInMillis());
 			cal.add(Calendar.DATE, 1);
-			Log.i("DEBUG", ((Integer)cal.DATE).toString());
 		}
 		dataDomingo = new Date(cal.getTimeInMillis());
 		return dataDomingo;
