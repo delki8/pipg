@@ -1,6 +1,7 @@
 package org.pipg.servico.download;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import org.pipg.bean.Boletim;
 
 import android.util.Log;
 
+/**
+ * @author delki8
+ * */
 public final class TrataConteudo {
 	
 	protected static ArrayList<Boletim> pegarListaBoletim(String url){
@@ -31,7 +35,7 @@ public final class TrataConteudo {
 				for (Element element : h5) {
 					Elements a = element.getElementsByTag("a");
 					boletim.setPastoral(a.get(0).text());
-					boletim.setLink(a.get(0).attr("href"));
+					boletim.setLink(new URL(a.get(0).attr("href")));
 				}
 				
 				Elements p = li.getElementsByTag("p");
@@ -63,7 +67,13 @@ public final class TrataConteudo {
 			dataDomingo = new Date(cal.getTimeInMillis());
 			cal.add(Calendar.DATE, 1);
 		}
+		
+		Long tempoAnterior = dataDomingo.getTime();
+		Long tempoAtual = cal.getTimeInMillis();
+		
 		dataDomingo = new Date(cal.getTimeInMillis());
+		
+		Log.i("DEBUG", ((Long)(tempoAtual - tempoAnterior)).toString());
 		return dataDomingo;
 	}
 }

@@ -1,12 +1,14 @@
 package org.pipg.bean;
 
+import java.net.URL;
 import java.util.Date;
 
 
 public class Boletim extends Publicacao{
 	private String pastoral;
 	private Date dataDoBoletim;
-	private String link;
+	private URL link;
+	private Integer numeroDoBoletim;
 
 	public String getPastoral() {
 		return pastoral;
@@ -20,10 +22,16 @@ public class Boletim extends Publicacao{
 	public void setDataDoBoletim(Date dataDoBoletim) {
 		this.dataDoBoletim = dataDoBoletim;
 	}
-	public String getLink() {
+	public URL getLink() {
 		return link;
 	}
-	public void setLink(String link) {
+	public void setLink(URL link) {
 		this.link = link;
+	}
+	public Integer getNumeroDoBoletim() {
+		return numeroDoBoletim;
+	}
+	public void setNumeroDoBoletim(Integer numeroDoBoletim) {
+		this.numeroDoBoletim = numeroDoBoletim;
 	}
 }
