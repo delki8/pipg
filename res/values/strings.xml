@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">pipg</string>
+
+    <string name="app_name">PIPG</string>
+    <string name="title_videos">Vídeos</string>
+    <string name="title_audios">Áudios</string>
+    <string name="title_boletins">Boletins</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_teste_gui">PIPG</string>
+
 </resources>
