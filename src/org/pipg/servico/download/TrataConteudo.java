@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +21,8 @@ import android.util.Log;
  * @author delki8
  * */
 public final class TrataConteudo {
+	
+	private static Date ultimaPublicacao;
 	
 	protected static ArrayList<Boletim> pegarListaBoletim(String url){
 		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
@@ -41,7 +44,8 @@ public final class TrataConteudo {
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
 					boletim.setDataPublicacao(sdf.parse(p.text().trim()));
-					boletim.setDataDoBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
+					boletim.setDataBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
+					boletim.setNumeroDoBoletim(encontraNumeroBoletim(boletim.getDataBoletim()));
 				}
 				
 				if (boletim.getPastoral() != null 
@@ -58,22 +62,43 @@ public final class TrataConteudo {
 		return boletins;
 	}
 	
+	protected static Integer encontraNumeroBoletim(Date dataBoletim) {
+		Calendar diaInicial = new GregorianCalendar();
+		diaInicial.set(2012, 4, 13); 
+
+		Calendar diaFinal = new GregorianCalendar();
+		diaFinal.setTime(dataBoletim);
+		
+		Log.i("DEBUG", "Days= " + dataBoletim.toString());
+		Integer numero = (daysBetween(diaInicial.getTime(),diaFinal.getTime()) / 7) + 20; 
+		return (numero);
+	}
+	
+	private static int daysBetween(Date d1, Date d2){
+		 return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+	}
+
 	protected static Date encontraProximoDomingo(Date dataDePublicacao){
 		Date dataDomingo = null;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dataDePublicacao);
-		
-		while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
-			dataDomingo = new Date(cal.getTimeInMillis());
-			cal.add(Calendar.DATE, 1);
+		int incremento = 1;
+		if (cal.get(Calendar.DAY_OF_WEEK) < Calendar.THURSDAY){
+			incremento = -1;
 		}
 		
-		Long tempoAnterior = dataDomingo.getTime();
-		Long tempoAtual = cal.getTimeInMillis();
+		while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
+			cal.add(Calendar.DATE, incremento);
+		}
 		
 		dataDomingo = new Date(cal.getTimeInMillis());
 		
-		Log.i("DEBUG", ((Long)(tempoAtual - tempoAnterior)).toString());
+		if (dataDomingo.equals(ultimaPublicacao)){
+			cal.add(Calendar.DATE, 7);
+			dataDomingo = new Date(cal.getTimeInMillis());
+		}
+		
+		ultimaPublicacao = dataDomingo;
 		return dataDomingo;
 	}
 }

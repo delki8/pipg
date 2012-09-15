@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Boletim extends Publicacao{
 	private String pastoral;
-	private Date dataDoBoletim;
+	private Date dataBoletim;
 	private URL link;
 	private Integer numeroDoBoletim;
 
@@ -16,11 +16,11 @@ public class Boletim extends Publicacao{
 	public void setPastoral(String pastoral) {
 		this.pastoral = pastoral;
 	}
-	public Date getDataDoBoletim() {
-		return dataDoBoletim;
+	public Date getDataBoletim() {
+		return dataBoletim;
 	}
-	public void setDataDoBoletim(Date dataDoBoletim) {
-		this.dataDoBoletim = dataDoBoletim;
+	public void setDataBoletim(Date dataBoletim) {
+		this.dataBoletim = dataBoletim;
 	}
 	public URL getLink() {
 		return link;
