@@ -55,7 +55,7 @@ public final class TrataConteudo {
 				}
 			}
 		} catch (IOException e) {
-			Log.e("ERRO", "Erro de conexã:: " + e.getMessage());
+			Log.e("ERRO", "Erro de conexão: " + e.getMessage());
 		} catch (ParseException e) {
 			Log.e("ERRO", "Erro de conversão de data: " + e.getMessage());
 		}
