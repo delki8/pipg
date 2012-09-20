@@ -1,9 +1,10 @@
-package org.pipg.servico.download;
+package org.pipg.control;
 
 import java.util.ArrayList;
 
 import org.apache.http.impl.conn.tsccm.WaitingThread;
-import org.pipg.bean.Boletim;
+import org.pipg.midia.Boletim;
+import org.pipg.net.TrataConteudo;
 
 import android.app.Service;
 import android.content.Intent;

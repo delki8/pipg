@@ -1,4 +1,4 @@
-package org.pipg.servico.download;
+package org.pipg.net;
 
 import java.io.IOException;
 import java.net.URL;
@@ -13,7 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.pipg.bean.Boletim;
+import org.pipg.midia.Boletim;
 
 import android.util.Log;
 
@@ -24,7 +24,7 @@ public final class TrataConteudo {
 	
 	private static Date ultimaPublicacao;
 	
-	protected static ArrayList<Boletim> pegarListaBoletim(String url){
+	public static ArrayList<Boletim> pegarListaBoletim(String url){
 		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
 		Boletim boletim = null;
 		try {
@@ -62,7 +62,7 @@ public final class TrataConteudo {
 		return boletins;
 	}
 	
-	protected static Integer encontraNumeroBoletim(Date dataBoletim) {
+	public static Integer encontraNumeroBoletim(Date dataBoletim) {
 		Calendar diaInicial = new GregorianCalendar();
 		diaInicial.set(2012, 4, 13); 
 
@@ -78,7 +78,7 @@ public final class TrataConteudo {
 		 return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	}
 
-	protected static Date encontraProximoDomingo(Date dataDePublicacao){
+	public static Date encontraProximoDomingo(Date dataDePublicacao){
 		Date dataDomingo = null;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dataDePublicacao);

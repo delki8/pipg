@@ -1,4 +1,4 @@
-package org.pipg.bean;
+package org.pipg.midia;
 
 import java.util.Date;
 

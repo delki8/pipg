@@ -1,4 +1,4 @@
-package org.pipg.activity;
+package org.pipg.midia;
 
 public class ItemLista {
 

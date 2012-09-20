@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name=".activity.TesteGUIActivity" >
+        <activity android:name=".gui.PublicacoesGUI" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".servico.download.BoletimServico" >
+        <service android:name=".control.BoletimServico" >
             <intent-filter>
                 <action android:name="BOLETIM" />
 

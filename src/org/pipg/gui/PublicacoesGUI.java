@@ -1,8 +1,16 @@
-package org.pipg.activity;
+package org.pipg.gui;
 
 import java.util.ArrayList;
 
 import org.pipg.R;
+import org.pipg.R.id;
+import org.pipg.R.layout;
+import org.pipg.R.menu;
+import org.pipg.R.string;
+import org.pipg.control.BoletimServico;
+import org.pipg.midia.Boletim;
+import org.pipg.midia.ItemLista;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -17,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class TesteGUIActivity extends FragmentActivity implements ActionBar.TabListener {
+public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabListener {
 
     SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -125,6 +133,7 @@ public class TesteGUIActivity extends FragmentActivity implements ActionBar.TabL
     	AdapterLista adapter;
     	ListView lista;
     	ArrayList<ItemLista> itens;
+    	ArrayList<Boletim> boletins;
     	
     	public DummySectionFragment() {
         }
@@ -188,8 +197,10 @@ public class TesteGUIActivity extends FragmentActivity implements ActionBar.TabL
         	itens.add(item15);
         	itens.add(item16);
         	
+        	BoletimServico boletimServico = new BoletimServico();
+        	boletins = boletimServico.baixaPublicacao(false);
         	
-        	adapter = new AdapterLista(getActivity(), itens);
+        	adapter = new AdapterLista(getActivity(), boletins);
         	lista = new ListView(getActivity());
         	lista.setAdapter(adapter);
         	
