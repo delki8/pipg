@@ -3,12 +3,8 @@ package org.pipg.gui;
 import java.util.ArrayList;
 
 import org.pipg.R;
-import org.pipg.R.id;
-import org.pipg.R.layout;
-import org.pipg.R.menu;
-import org.pipg.R.string;
+import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimServico;
-import org.pipg.midia.Boletim;
 import org.pipg.midia.ItemLista;
 
 import android.app.ActionBar;

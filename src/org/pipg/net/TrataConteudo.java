@@ -13,7 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.pipg.midia.Boletim;
+import org.pipg.beans.Boletim;
 
 import android.util.Log;
 

@@ -3,9 +3,7 @@ package org.pipg.gui;
 import java.util.ArrayList;
 
 import org.pipg.R;
-import org.pipg.R.id;
-import org.pipg.R.layout;
-import org.pipg.midia.Boletim;
+import org.pipg.beans.Boletim;
 import org.pipg.midia.ItemLista;
 
 import android.content.Context;

@@ -2,7 +2,7 @@ package org.pipg.control;
 
 import java.util.ArrayList;
 
-import org.pipg.midia.Boletim;
+import org.pipg.beans.Boletim;
 import org.pipg.net.TrataConteudo;
 
 import android.app.Service;
