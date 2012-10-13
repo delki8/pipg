@@ -1,4 +1,4 @@
-package org.pipg.midia;
+package org.pipg.beans;
 
 import java.net.URL;
 import java.util.Date;

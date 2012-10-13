@@ -3,8 +3,6 @@ package org.pipg.midia;
 import java.util.Date;
 
 public abstract class Publicacao {
-	public abstract Date adsf();
-	
 	private Date dataPublicacao;
 	private Boolean jaFoiBaixado;
 	

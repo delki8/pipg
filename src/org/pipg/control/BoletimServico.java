@@ -2,7 +2,6 @@ package org.pipg.control;
 
 import java.util.ArrayList;
 
-import org.apache.http.impl.conn.tsccm.WaitingThread;
 import org.pipg.midia.Boletim;
 import org.pipg.net.TrataConteudo;
 
@@ -80,5 +79,11 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 			Log.i(ERRO, "Erro na thread: " + e.getMessage());
 		}
 		return boletins;
+	}
+
+	@Override
+	public PublicacaoInterface<Boletim> getInstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
