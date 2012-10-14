@@ -8,7 +8,10 @@
         android:id="@+id/pastoral"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Texto teste" />
+        android:text="Texto teste"
+        android:textColor="@color/verde"
+        android:textStyle="bold"
+        android:textSize="18dp" />
     
     <TextView
         android:id="@+id/dataPublicacao"

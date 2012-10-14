@@ -66,12 +66,6 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
 //						BoletimRepositorio bRepositorio = new BoletimRepositorio();
 //						boletins = bRepositorio.listarBoletins();
-						for (Boletim boletim : boletins) {
-							Log.i("boletim", "Pastoral: " + boletim.getPastoral());
-							Log.i("boletim", "Data Pub: " + boletim.getDataPublicacao());
-							Log.i("boletim", "Data: " + boletim.getDataBoletim());
-							Log.i("boletim", "Número: " + boletim.getNumeroDoBoletim());
-						}
 						stopSelf();
 					}
 				};

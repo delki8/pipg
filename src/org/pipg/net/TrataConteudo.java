@@ -43,9 +43,11 @@ public final class TrataConteudo {
 				
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
-					boletim.setDataPublicacao(sdf.parse(p.text().trim()));
-					boletim.setDataBoletim(encontraProximoDomingo(boletim.getDataPublicacao()));
-					boletim.setNumeroDoBoletim(encontraNumeroBoletim(boletim.getDataBoletim()));
+					String data = p.text().trim();
+					boletim.setDataPublicacao(sdf.parse(data));
+//					boletim.setData(encontraProximoDomingo(boletim
+//							.getDataPublicacao()));
+//					boletim.setNumero(encontraNumeroBoletim(boletim.getData()));
 				}
 				
 				if (boletim.getPastoral() != null 

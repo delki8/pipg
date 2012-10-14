@@ -1,7 +1,9 @@
 package org.pipg.net;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.BreakIterator;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.pipg.beans.Boletim;
 import org.pipg.beans.Boletim.Boletins;
@@ -29,18 +31,7 @@ public class BoletimRepositorio {
 		Boletins.DATAPUB + " TEXT NOT NULL, " +
 		Boletins.LINK + " TEXT NOT NULL, " +
 		Boletins.NUMERO + " INTEGER" +
-		");",
-		
-		"INSERT INTO " + NOME_TABELA +
-		"(" + 
-			Boletins.PASTORAL + ", " +
-			Boletins.DATA + ", " +
-			Boletins.DATAPUB + ", " +
-			Boletins.LINK + ", " +
-			Boletins.NUMERO +
-		") " +
-		"VALUES ('Deus ama a todos','2012-09-10','2012-10-10'," +
-		"'http://www.link.url.com',12);"};
+		");"};
 	
 	private static final String SCRIPT_DATABASE_DELETE = 
 			"DROP TABLE IF EXISTS " + NOME_TABELA;
@@ -72,10 +63,32 @@ public class BoletimRepositorio {
 		return id;
 	}
 	
+	/**
+	 * Assinatura do método inserir para inserir uma lista de boletins;
+	 * @param boletins é um ArrayList com todos os boletins que serão inseridos. Se algum
+	 * deles já possuir id ele será atualizado.
+	 * @return True se deu tudo certo e false se deu algum problema;
+	 * */
+	
+	public int inserir(ArrayList<Boletim> boletins){
+		int qtdRegistros = 0;
+		for (Boletim boletim : boletins) {
+			Boletim b = buscarPelaPastoral(boletim);
+			if (b == null){
+				long id = inserir(boletim);
+				if (id > 0) {
+					qtdRegistros++;
+				}
+			}
+		}
+		return qtdRegistros;
+	}
+	
 	private long inserir(Boletim boletim) {
 		ContentValues values = new ContentValues();
 		values.put(Boletins.PASTORAL, boletim.getPastoral());
 		values.put(Boletins.DATAPUB, boletim.getDataPublicacao().toString());
+		values.put(Boletins.LINK, boletim.getLink().toString());
 		long id = inserir(values);
 		return id;
 	}
@@ -134,6 +147,20 @@ public class BoletimRepositorio {
 		return null;
 	}
 	
+	private Boletim buscarPelaPastoral(Boletim boletim) {
+		String where = Boletins.PASTORAL + "=?";
+		String[] whereArgs = new String[] {boletim.getPastoral()};
+		Cursor c = db.query(true, NOME_TABELA, Boletim.colunas, where, 
+				whereArgs, null, null, null, null);
+		if (c.getCount() > 0) {
+			c.moveToFirst();
+			Boletim bRecuperado = populaBoletim(c);
+			return bRecuperado;
+		}
+		
+		return null;
+	}
+	
 	private Cursor getCursor() {
 		try {
 			return db.query(NOME_TABELA, Boletim.colunas, null, null, null, 
@@ -142,6 +169,35 @@ public class BoletimRepositorio {
 			Log.e(CATEGORIA, "Erro ao buscar os boletins: " + e.toString());
 			return null;
 		}
+	}
+
+	
+	/**
+	 * Popula um boletim com dados que vierem de um cursor.
+	 * @param c é um cursor que possui TODAS as colunas da tabela de boletins.
+	 * @return Boletim com todos os dados preenchidos.
+	 * */
+	private Boletim populaBoletim(Cursor c) {
+		Boletim boletim = new Boletim();
+		try {
+			boletim.setId(c.getLong(c.getColumnIndexOrThrow(
+					Boletins._ID)));
+			boletim.setPastoral(c.getString(c.getColumnIndexOrThrow(
+					Boletins.PASTORAL)));
+//			boletim.setDataBoletim(c.getString(c.getColumnIndexOrThrow(Boletins.DATA)));
+//			boletim.setDataPublicacao(c.getString(c.getColumnIndexOrThrow(Boletins.DATAPUB)));
+			boletim.setLink(new URL(c.getString(c.getColumnIndexOrThrow(
+					Boletins.LINK))));
+			boletim.setNumero(c.getInt(c.getColumnIndexOrThrow(
+					Boletins.NUMERO)));
+			return boletim;
+		} catch (MalformedURLException e) {
+			Log.e(CATEGORIA, "URL inválida." + e.getMessage());
+		} catch (IllegalArgumentException e) {
+			Log.e(CATEGORIA, "Não foi possível popular o boletim]." + 
+					e.getMessage());
+		}
+		return null;
 	}
 	
 	public ArrayList<Boletim> listarBoletins() {
@@ -172,7 +228,7 @@ public class BoletimRepositorio {
 			return c;
 	}
 	
-	private void fechar() {
+	public void fechar() {
 		if (db != null){
 			db.close();
 		}

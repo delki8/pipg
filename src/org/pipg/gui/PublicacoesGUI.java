@@ -15,18 +15,21 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class PublicacoesGUI extends FragmentActivity 
 	implements ActionBar.TabListener {
-
     SectionsPagerAdapter mSectionsPagerAdapter;
-
     ViewPager mViewPager;
+    
+   private static ArrayList<Boletim> boletins;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class PublicacoesGUI extends FragmentActivity
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+        
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -70,6 +73,24 @@ public class PublicacoesGUI extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_teste_gui, menu);
+        
+        MenuItem refreshButton = menu.findItem(R.id.menu_refresh);
+        refreshButton.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+	        	BoletimServico bServico = new BoletimServico();
+	        	boletins = bServico.baixaPublicacao(false);
+	        	BoletimRepositorio bRepositorio = new BoletimRepositorio(
+	        			PublicacoesGUI.this);
+	        	int qtdRegistrosInseridos = bRepositorio.inserir(boletins);
+	        	bRepositorio.fechar();
+	        	
+	        	boolean inseriu = qtdRegistrosInseridos > 0 ? true : false;
+				return inseriu;
+			}
+		});
+        
         return true;
     }
 
@@ -130,7 +151,6 @@ public class PublicacoesGUI extends FragmentActivity
 //    	AdapterLista adapter;
     	BoletimAdapter adapter;
     	ListView lista;
-    	ArrayList<Boletim> boletins;
     	
     	public DummySectionFragment() {
     	}
@@ -141,12 +161,9 @@ public class PublicacoesGUI extends FragmentActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
         	
-        	BoletimServico boletimServico = new BoletimServico();
-//        	boletins = boletimServico.baixaPublicacao(false);
 			BoletimRepositorio bRepositorio = new BoletimRepositorio(getActivity());
 			boletins = bRepositorio.listarBoletins();
 
-//        	adapter = new AdapterLista(getActivity(), boletins);
         	adapter = new BoletimAdapter(getActivity(), boletins);
         	lista = new ListView(getActivity());
         	lista.setAdapter(adapter);

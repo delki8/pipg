@@ -1,15 +1,20 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/menu_pai"
-    android:icon="@android:drawable/ic_menu_manage"
-    android:showAsAction="always">
-	
-    <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-        <item
-            android:id="@+id/menu_sobre"
-            android:icon="@android:drawable/ic_dialog_info"
-            android:title="Sobre"
-            android:orderInCategory="100"/>
-    </menu>
-</item>    
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_pai"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:showAsAction="always">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+            <item
+                android:id="@+id/menu_sobre"
+                android:icon="@android:drawable/ic_dialog_info"
+                android:orderInCategory="100"
+                android:title="Sobre"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:showAsAction="always"/>
+
 </menu>
