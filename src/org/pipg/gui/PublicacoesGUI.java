@@ -1,12 +1,10 @@
 package org.pipg.gui;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimServico;
-import org.pipg.midia.ItemLista;
 import org.pipg.net.BoletimRepositorio;
 
 import android.app.ActionBar;
@@ -23,7 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabListener {
+public class PublicacoesGUI extends FragmentActivity 
+	implements ActionBar.TabListener {
 
     SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -33,9 +32,10 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teste_gui);
-        // Create the adapter that will return a fragment for each of the three primary sections
-        // of the app.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Create the adapter that will return a fragment for each of the three 
+        // primary sections of the app.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(
+        		getSupportFragmentManager());
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -125,17 +125,16 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
     /**
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
-    public class DummySectionFragment extends Fragment{ //implements OnItemClickListener {
+    public static class DummySectionFragment extends Fragment { //implements OnItemClickListener {
         
 //    	AdapterLista adapter;
     	BoletimAdapter adapter;
     	ListView lista;
-    	ArrayList<ItemLista> itens;
     	ArrayList<Boletim> boletins;
     	
     	public DummySectionFragment() {
-        }
-
+    	}
+    	
         public static final String ARG_SECTION_NUMBER = "section_number";
 
         @Override
@@ -144,7 +143,7 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
         	
         	BoletimServico boletimServico = new BoletimServico();
 //        	boletins = boletimServico.baixaPublicacao(false);
-			BoletimRepositorio bRepositorio = new BoletimRepositorio(PublicacoesGUI.this);
+			BoletimRepositorio bRepositorio = new BoletimRepositorio(getActivity());
 			boletins = bRepositorio.listarBoletins();
 
 //        	adapter = new AdapterLista(getActivity(), boletins);
