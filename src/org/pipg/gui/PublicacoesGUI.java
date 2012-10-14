@@ -1,11 +1,13 @@
 package org.pipg.gui;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimServico;
 import org.pipg.midia.ItemLista;
+import org.pipg.net.BoletimRepositorio;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -58,10 +60,9 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
             // Create a tab with text corresponding to the page title defined by the adapter.
             // Also specify this Activity object, which implements the TabListener interface, as the
             // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+            actionBar.addTab(actionBar.newTab()
+            		.setText(mSectionsPagerAdapter.getPageTitle(i))
+            		.setTabListener(this));
         }
         
     }
@@ -126,7 +127,8 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
      */
     public class DummySectionFragment extends Fragment{ //implements OnItemClickListener {
         
-    	AdapterLista adapter;
+//    	AdapterLista adapter;
+    	BoletimAdapter adapter;
     	ListView lista;
     	ArrayList<ItemLista> itens;
     	ArrayList<Boletim> boletins;
@@ -140,86 +142,17 @@ public class PublicacoesGUI extends FragmentActivity implements ActionBar.TabLis
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
         	
-        	ItemLista item1 = new ItemLista("Item1");
-        	ItemLista item2 = new ItemLista("Item2");
-        	ItemLista item3 = new ItemLista("Item3");
-        	ItemLista item4 = new ItemLista("Item4");
-        	ItemLista item5 = new ItemLista("Item5");
-        	ItemLista item6 = new ItemLista("Item6");
-        	ItemLista item7 = new ItemLista("Item7");
-        	ItemLista item8 = new ItemLista("Item8");
-        	ItemLista item9 = new ItemLista("Item9");
-        	ItemLista item10 = new ItemLista("Item10");
-        	ItemLista item11 = new ItemLista("Item11");
-        	ItemLista item12 = new ItemLista("Item12");
-        	ItemLista item13 = new ItemLista("Item13");
-        	ItemLista item14 = new ItemLista("Item14");
-        	ItemLista item15 = new ItemLista("Item15");
-        	ItemLista item16 = new ItemLista("Item16");
-        	
-        	/*ItemLista item1 = new ItemLista("Item1",R.drawable.ic_pipg);
-        	ItemLista item2 = new ItemLista("Item2",R.drawable.ic_pipg);
-        	ItemLista item3 = new ItemLista("Item3",R.drawable.ic_pipg);
-        	ItemLista item4 = new ItemLista("Item4",R.drawable.ic_pipg);
-        	ItemLista item5 = new ItemLista("Item5",R.drawable.ic_pipg);
-        	ItemLista item6 = new ItemLista("Item6",R.drawable.ic_pipg);
-        	ItemLista item7 = new ItemLista("Item7",R.drawable.ic_pipg);
-        	ItemLista item8 = new ItemLista("Item8",R.drawable.ic_pipg);
-        	ItemLista item9 = new ItemLista("Item9",R.drawable.ic_pipg);
-        	ItemLista item10 = new ItemLista("Item10",R.drawable.ic_pipg);
-        	ItemLista item11 = new ItemLista("Item11",R.drawable.ic_pipg);
-        	ItemLista item12 = new ItemLista("Item12",R.drawable.ic_pipg);
-        	ItemLista item13 = new ItemLista("Item13",R.drawable.ic_pipg);
-        	ItemLista item14 = new ItemLista("Item14",R.drawable.ic_pipg);
-        	ItemLista item15 = new ItemLista("Item15",R.drawable.ic_pipg);
-        	ItemLista item16 = new ItemLista("Item16",R.drawable.ic_pipg);
-        	*/
-        	
-        	itens = new ArrayList<ItemLista>();
-        	itens.add(item1);
-        	itens.add(item2);
-        	itens.add(item3);
-        	itens.add(item4);
-        	itens.add(item5);
-        	itens.add(item6);
-        	itens.add(item7);
-        	itens.add(item8);
-        	itens.add(item9);
-        	itens.add(item10);
-        	itens.add(item11);
-        	itens.add(item12);
-        	itens.add(item13);
-        	itens.add(item14);
-        	itens.add(item15);
-        	itens.add(item16);
-        	
         	BoletimServico boletimServico = new BoletimServico();
-        	boletins = boletimServico.baixaPublicacao(false);
-        	
-        	adapter = new AdapterLista(getActivity(), boletins);
+//        	boletins = boletimServico.baixaPublicacao(false);
+			BoletimRepositorio bRepositorio = new BoletimRepositorio(PublicacoesGUI.this);
+			boletins = bRepositorio.listarBoletins();
+
+//        	adapter = new AdapterLista(getActivity(), boletins);
+        	adapter = new BoletimAdapter(getActivity(), boletins);
         	lista = new ListView(getActivity());
         	lista.setAdapter(adapter);
-        	
-            //TextView textView = new TextView(getActivity());
-            //textView.setGravity(Gravity.CENTER);
-            //Bundle args = getArguments();
-            //textView.setText(TESTE);
-            //textView.setText(Integer.toString(args.getInt(ARG_SECTION_NUMBER)));
+
             return lista;
         }
-
-	/*@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		ItemLista item = adapter.getItem(arg2);
-		
-		item.setTexto("clicado");
-		
-		Log.d("onItemClick", item.getTexto());
-		*/
-		
-		
-		
-		
 	}
-    
 }

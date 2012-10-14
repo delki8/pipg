@@ -3,6 +3,7 @@ package org.pipg.control;
 import java.util.ArrayList;
 
 import org.pipg.beans.Boletim;
+import org.pipg.net.BoletimRepositorio;
 import org.pipg.net.TrataConteudo;
 
 import android.app.Service;
@@ -12,7 +13,8 @@ import android.util.Log;
 
 public class BoletimServico extends Service implements PublicacaoInterface<Boletim>{
 	private final String ERRO = "PIPG-Erro";
-	private static final String URL_ATUALIZACAO_PARCIAL = "http://pipg.org/index.cfm?p=bulletins";
+	private static final String URL_ATUALIZACAO_PARCIAL = 
+			"http://pipg.org/index.cfm?p=bulletins";
 	
 	ArrayList<Boletim> boletins = new ArrayList<Boletim>();
 	
@@ -41,7 +43,7 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 					public void run(){
 						Boolean euDevoContinuarBuscando = true;
 						Integer nPagina = 1;
-						while (euDevoContinuarBuscando){
+						while (euDevoContinuarBuscando) {
 							ArrayList<Boletim> boletinsTemp = TrataConteudo
 									.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL + "&d=" + nPagina);
 							if (boletinsTemp != null && boletinsTemp.size() > 0){
@@ -57,11 +59,13 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 						stopSelf();
 					}
 				};
-			}else{
+			} else {
 				t = new Thread("baixaBoletinsParcial"){
 					@Override
 					public void run(){
 						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
+//						BoletimRepositorio bRepositorio = new BoletimRepositorio();
+//						boletins = bRepositorio.listarBoletins();
 						for (Boletim boletim : boletins) {
 							Log.i("boletim", "Pastoral: " + boletim.getPastoral());
 							Log.i("boletim", "Data Pub: " + boletim.getDataPublicacao());
