@@ -2,11 +2,12 @@ package org.pipg.net;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.BreakIterator;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.pipg.beans.Boletim;
 import org.pipg.beans.Boletim.Boletins;
+import org.pipg.utils.Util;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -171,6 +172,26 @@ public class BoletimRepositorio {
 		}
 	}
 
+	public ArrayList<Boletim> listarBoletins() {
+		Cursor c = getCursor();
+		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
+		if (c.moveToFirst()) {
+			do {
+				Boletim boletim = new Boletim();
+				boletim = populaBoletim(c);
+				boletins.add(boletim);
+			} while (c.moveToNext());
+		}
+		return boletins;
+	}
+	
+	private Cursor query(SQLiteQueryBuilder queryBuilder, String[] projection,
+			String where, String[] whereArgs, String groupBy, String having,
+			String orderBy){
+			Cursor c = queryBuilder.query(this.db, projection, where, whereArgs, 
+					groupBy, having, orderBy);
+			return c;
+	}
 	
 	/**
 	 * Popula um boletim com dados que vierem de um cursor.
@@ -185,7 +206,14 @@ public class BoletimRepositorio {
 			boletim.setPastoral(c.getString(c.getColumnIndexOrThrow(
 					Boletins.PASTORAL)));
 //			boletim.setDataBoletim(c.getString(c.getColumnIndexOrThrow(Boletins.DATA)));
-//			boletim.setDataPublicacao(c.getString(c.getColumnIndexOrThrow(Boletins.DATAPUB)));
+			Date dataPublicacao = Util.dataStringDate(
+					c.getString(c.getColumnIndexOrThrow(Boletins.DATAPUB)));
+			boletim.setDataPublicacao(dataPublicacao);
+			
+			String dataPubFormatada = Util.dataStringString(c.getString(
+					c.getColumnIndexOrThrow(Boletins.DATAPUB)));
+			boletim.setDataFormatada(dataPubFormatada);
+			
 			boletim.setLink(new URL(c.getString(c.getColumnIndexOrThrow(
 					Boletins.LINK))));
 			boletim.setNumero(c.getInt(c.getColumnIndexOrThrow(
@@ -198,34 +226,6 @@ public class BoletimRepositorio {
 					e.getMessage());
 		}
 		return null;
-	}
-	
-	public ArrayList<Boletim> listarBoletins() {
-		Cursor c = getCursor();
-		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
-		if (c.moveToFirst()) {
-			int idxId = c.getColumnIndexOrThrow(Boletins._ID);
-			int idxPastoral = c.getColumnIndexOrThrow(Boletins.PASTORAL);
-			int idxDataPub = c.getColumnIndexOrThrow(Boletins.DATAPUB);
-			
-			do {
-				Boletim boletim = new Boletim();
-				boletins.add(boletim);
-				boletim.setId(c.getLong(idxId));
-				boletim.setPastoral(c.getString(idxPastoral));
-				// TODO tratar data aqui
-//				boletim.setDataPublicacao(c.getString((idxDataPub));
-			} while (c.moveToNext());
-		}
-		return boletins;
-	}
-	
-	private Cursor query(SQLiteQueryBuilder queryBuilder, String[] projection,
-			String where, String[] whereArgs, String groupBy, String having,
-			String orderBy){
-			Cursor c = queryBuilder.query(this.db, projection, where, whereArgs, 
-					groupBy, having, orderBy);
-			return c;
 	}
 	
 	public void fechar() {

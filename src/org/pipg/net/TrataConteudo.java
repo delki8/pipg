@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pipg.beans.Boletim;
+import org.pipg.utils.Util;
 
 import android.util.Log;
 
@@ -80,20 +81,19 @@ public final class TrataConteudo {
 		 return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	}
 
-	public static Date encontraProximoDomingo(Date dataDePublicacao){
-		Date dataDomingo = null;
+	
+	/** Encontra o domingo seguinte à uma determinada data. 
+	 * @param dataDePublicacao é a data usada como parâmetro, a data retornada
+	 * é o próximo domingo sequencialmente à data informada aqui.
+	 * @return java.util.Date correspondente ao domingo seguinte à data 
+	 * informada no parâmetro.
+	 * */
+	public static Date domingoMaisProximo(Date dataDePublicacao) {
+		
+		Date dataDomingo = Util.domingoMaisProximo(dataDePublicacao);
+		
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(dataDePublicacao);
-		int incremento = 1;
-		if (cal.get(Calendar.DAY_OF_WEEK) < Calendar.THURSDAY){
-			incremento = -1;
-		}
-		
-		while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
-			cal.add(Calendar.DATE, incremento);
-		}
-		
-		dataDomingo = new Date(cal.getTimeInMillis());
+		cal.setTimeInMillis(dataDomingo.getTime());
 		
 		if (dataDomingo.equals(ultimaPublicacao)){
 			cal.add(Calendar.DATE, 7);

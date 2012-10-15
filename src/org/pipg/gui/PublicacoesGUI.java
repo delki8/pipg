@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +33,7 @@ public class PublicacoesGUI extends FragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teste_gui);
+        setContentView(R.layout.activity_gui);
         // Create the adapter that will return a fragment for each of the three 
         // primary sections of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -74,8 +73,8 @@ public class PublicacoesGUI extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_teste_gui, menu);
         
-        MenuItem refreshButton = menu.findItem(R.id.menu_refresh);
-        refreshButton.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_parcial);
+        refreshParcial.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -90,6 +89,23 @@ public class PublicacoesGUI extends FragmentActivity
 				return inseriu;
 			}
 		});
+        
+        MenuItem refreshCompleto = menu.findItem(R.id.menu_refresh_completo);
+        refreshCompleto.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        	
+        	@Override
+        	public boolean onMenuItemClick(MenuItem item) {
+        		BoletimServico bServico = new BoletimServico();
+        		boletins = bServico.baixaPublicacao(true);
+        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
+        				PublicacoesGUI.this);
+        		int qtdRegistrosInseridos = bRepositorio.inserir(boletins);
+        		bRepositorio.fechar();
+        		
+        		boolean inseriu = qtdRegistrosInseridos > 0 ? true : false;
+        		return inseriu;
+        	}
+        });
         
         return true;
     }

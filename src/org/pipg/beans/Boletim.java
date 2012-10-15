@@ -24,6 +24,9 @@ public class Boletim extends Publicacao{
 	private URL link;
 	private Integer numero;
 	
+	/* Não persistido*/
+	private String dataFormatada;
+	
 	public Boletim(long id, String pastoral, Date data, URL link,
 			Integer numero) {
 		super();
@@ -71,6 +74,14 @@ public class Boletim extends Publicacao{
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+
+	public String getDataFormatada() {
+		return dataFormatada;
+	}
+
+	public void setDataFormatada(String dataFormatada) {
+		this.dataFormatada = dataFormatada;
 	}
 
 	public static final class Boletins implements BaseColumns {

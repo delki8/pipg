@@ -46,8 +46,8 @@ public class BoletimAdapter extends BaseAdapter {
 		TextView pastoral = (TextView) view.findViewById(R.id.pastoral);
 		pastoral.setText(boletim.getPastoral());
 		
-//		TextView dataPublicacao = (TextView) view.findViewById(R.id.dataPublicacao);
-//		dataPublicacao.setText(boletim.getDataPublicacao().toString());
+		TextView dataPublicacao = (TextView) view.findViewById(R.id.dataPublicacao);
+		dataPublicacao.setText(boletim.getDataFormatada());
 		return view;
 	}
 
