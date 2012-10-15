@@ -1,10 +1,7 @@
 package org.pipg.net;
 
-import java.util.Iterator;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -33,9 +30,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
+	public void onUpgrade(SQLiteDatabase db, int versaoAntiga, 
+			int novaVersao) {
+		Log.w(CATEGORIA, "Atualizando a versão " + versaoAntiga + " para " +
+				novaVersao + ". Todos os registros serão deletados.");
+		Log.i(CATEGORIA, scriptSQLDelete);
+		//Deleta as tabelas
+		db.execSQL(scriptSQLDelete);
+		//Cria novamente...
+		onCreate(db);
 	}
 
 }

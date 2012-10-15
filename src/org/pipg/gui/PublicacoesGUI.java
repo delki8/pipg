@@ -22,6 +22,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class PublicacoesGUI extends FragmentActivity 
 	implements ActionBar.TabListener {
@@ -90,8 +91,25 @@ public class PublicacoesGUI extends FragmentActivity
 			}
 		});
         
-        MenuItem refreshCompleto = menu.findItem(R.id.menu_refresh_completo);
+        MenuItem refreshCompleto = menu.findItem(R.id.menu_limpar);
         refreshCompleto.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        	
+        	@Override
+        	public boolean onMenuItemClick(MenuItem item) {
+        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
+        				PublicacoesGUI.this);
+        		int linhasApagadas = bRepositorio.limparBanco();
+        		Toast.makeText(PublicacoesGUI.this, linhasApagadas + 
+        				" registros apagados", Toast.LENGTH_SHORT).show();
+        		bRepositorio.fechar();
+        		
+        		boolean limpou = linhasApagadas > 0 ? true : false;
+        		return limpou;
+        	}
+        });
+        
+        MenuItem limpar = menu.findItem(R.id.menu_refresh_completo);
+        limpar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
         	
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {

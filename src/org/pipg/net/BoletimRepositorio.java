@@ -117,6 +117,20 @@ public class BoletimRepositorio {
 		return count;
 	}
 	
+	/**Apaga todos os boletins do banco.
+	 * @return linhasAfetadas é a quantidade de linhas afetadas.
+	 * */
+	public int limparBanco() {
+		Cursor c = getCursor();
+		int linhasAfetadas = 0;
+		while (c.moveToNext()) {
+			Boletim boletim = new Boletim();
+			boletim = populaBoletim(c);
+			linhasAfetadas += deletar(boletim.getId());
+		}
+		return linhasAfetadas;
+	}
+	
 	private int deletar(long id) {
 		String _id = String.valueOf(id);
 		String where = Boletins._ID + "=?";
@@ -137,10 +151,7 @@ public class BoletimRepositorio {
 		if (c.getCount() > 0) {
 			c.moveToFirst();
 			Boletim boletim = new Boletim();
-			boletim.setId(c.getLong(c.getColumnIndexOrThrow(Boletins._ID)));
-			boletim.setPastoral(c.getString(c.getColumnIndexOrThrow(Boletins.PASTORAL)));
-			// TODO tratar a data aqui na linha
-//			boletim.setDataPublicacao(c.getString(c.getColumnIndexOrThrow(Boletins.DATAPUB)));
+			boletim = populaBoletim(c);
 			c.close();
 			return boletim;
 		}

@@ -14,20 +14,20 @@
                 android:id="@+id/menu_refresh_completo"
                 android:icon="@android:drawable/stat_sys_download"
                 android:showAsAction="always"
-                android:title="Completo" />
+                android:title="Completo"/>
         </menu>
     </item>
     <item
-        android:id="@+id/menu_pai"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:showAsAction="always">
-        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-            <item
-                android:id="@+id/menu_sobre"
-                android:icon="@android:drawable/ic_dialog_info"
-                android:orderInCategory="100"
-                android:title="Sobre"/>
-        </menu>
-    </item>
+        android:id="@+id/menu_sobre"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Sobre"/>
+    <item
+        android:id="@+id/menu_limpar"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Limpar"/>
 
 </menu>

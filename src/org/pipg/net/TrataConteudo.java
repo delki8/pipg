@@ -2,8 +2,6 @@ package org.pipg.net;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +29,6 @@ public final class TrataConteudo {
 		try {
 			Document doc = Jsoup.connect(url).get();
 			Elements elements = doc.select(".grid_10 li");
-			SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, yyyy");
 			for (Element li : elements) {
 				boletim = new Boletim();
 				
@@ -45,9 +42,10 @@ public final class TrataConteudo {
 				Elements p = li.getElementsByTag("p");
 				if (p.text() != null && !p.text().trim().equals("")){
 					String data = p.text().trim();
-					boletim.setDataPublicacao(sdf.parse(data));
-//					boletim.setData(encontraProximoDomingo(boletim
-//							.getDataPublicacao()));
+					boletim.setDataPublicacao(Util.formatDateCustom(data, 
+							"dd MMM, yyyy"));
+					boletim.setData(domingoMaisProximo(boletim
+							.getDataPublicacao()));
 //					boletim.setNumero(encontraNumeroBoletim(boletim.getData()));
 				}
 				
@@ -59,8 +57,6 @@ public final class TrataConteudo {
 			}
 		} catch (IOException e) {
 			Log.e("ERRO", "Erro de conexão: " + e.getMessage());
-		} catch (ParseException e) {
-			Log.e("ERRO", "Erro de conversão de data: " + e.getMessage());
 		}
 		return boletins;
 	}
@@ -81,15 +77,7 @@ public final class TrataConteudo {
 		 return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 	}
 
-	
-	/** Encontra o domingo seguinte à uma determinada data. 
-	 * @param dataDePublicacao é a data usada como parâmetro, a data retornada
-	 * é o próximo domingo sequencialmente à data informada aqui.
-	 * @return java.util.Date correspondente ao domingo seguinte à data 
-	 * informada no parâmetro.
-	 * */
 	public static Date domingoMaisProximo(Date dataDePublicacao) {
-		
 		Date dataDomingo = Util.domingoMaisProximo(dataDePublicacao);
 		
 		Calendar cal = Calendar.getInstance();

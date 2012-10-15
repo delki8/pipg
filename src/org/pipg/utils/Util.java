@@ -15,7 +15,7 @@ public class Util {
 	/** Recebe uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy" e retorna 
 	 * uma java.util.Date.
 	 * @param dataString é uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy"
-	 * @return java.util.Date convertida.
+	 * @return data convertida.
 	 * */
 	public static Date dataStringDate(String dataString) {
 	    try {
@@ -29,6 +29,18 @@ public class Util {
 	    return null;
 	}
 	
+	/** Pega qualquer java.util.Date e formata para o formato desejado.
+	 * @param data com a data a ser formatada.
+	 * @param formato com o formato desejado Ex: "dd/MM/yyyy"
+	 * @return dataFormatada de acordo com o formato informado. 
+	 * */
+	public static String dataDateString(Date data, String formato) {
+		String dataFormatada = null;
+		SimpleDateFormat sdf = new SimpleDateFormat(formato);
+		dataFormatada = sdf.format(data);
+		return dataFormatada;
+	}
+	
 	/** Recebe uma String de data no formato "EEE MMM dd HH:mm:ss zzz yyyy"
 	 * e formata ela para "dd/MM/yyyy"
 	 * @param dataString no formato "EEE MMM dd HH:mm:ss zzz yyyy"
@@ -36,9 +48,26 @@ public class Util {
 	 * */
 	public static String dataStringString(String dataString) {
 		Date data = dataStringDate(dataString);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		String dataFormatada = sdf.format(data);
+		String dataFormatada = dataDateString(data, "dd/MM/yyyy");
 		return dataFormatada;
+	}
+	
+	/** Pega uma String no formato informado e transforma num java.util.Date
+	 * @param data no formato informado.
+	 * @param formato em que a data está chegando.
+	 * @return Data referente ao formato personalizado ou null caso não seja
+	 * possível formatar.
+	 * */
+	public static Date formatDateCustom(String dataString, String formato) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(formato);
+			Date dataRetorno = sdf.parse(dataString);
+			return dataRetorno;
+		} catch (ParseException e) {
+			Log.e(CATEGORIA, "A data: " + dataString + " não está no formato: " 
+					+ formato);
+		}
+		return null;
 	}
 	
 	/** Encontra o domingo mais próximo de uma determinada data.
