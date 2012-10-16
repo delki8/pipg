@@ -128,6 +128,7 @@ public class BoletimRepositorio {
 			boletim = populaBoletim(c);
 			linhasAfetadas += deletar(boletim.getId());
 		}
+		c.close();
 		return linhasAfetadas;
 	}
 	
@@ -169,6 +170,7 @@ public class BoletimRepositorio {
 			Boletim bRecuperado = populaBoletim(c);
 			return bRecuperado;
 		}
+		c.close();
 		
 		return null;
 	}
@@ -193,6 +195,7 @@ public class BoletimRepositorio {
 				boletins.add(boletim);
 			} while (c.moveToNext());
 		}
+		c.close();
 		return boletins;
 	}
 	

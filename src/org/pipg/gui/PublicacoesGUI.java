@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
+import org.pipg.control.BoletimControl;
 import org.pipg.control.BoletimServico;
 import org.pipg.net.BoletimRepositorio;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -67,32 +70,42 @@ public class PublicacoesGUI extends FragmentActivity
             		.setText(mSectionsPagerAdapter.getPageTitle(i))
             		.setTabListener(this));
         }
-        
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_teste_gui, menu);
+        getMenuInflater().inflate(R.menu.activity_action_gui, menu);
         
         MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_parcial);
         refreshParcial.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-	        	BoletimServico bServico = new BoletimServico();
-	        	boletins = bServico.baixaPublicacao(false);
-	        	BoletimRepositorio bRepositorio = new BoletimRepositorio(
+				BoletimControl bControl = new BoletimControl();
+	        	int inseridos = bControl.atualizaBoletins(false, 
 	        			PublicacoesGUI.this);
-	        	int qtdRegistrosInseridos = bRepositorio.inserir(boletins);
-	        	bRepositorio.fechar();
 	        	
-	        	boolean inseriu = qtdRegistrosInseridos > 0 ? true : false;
+	        	boolean inseriu = inseridos > 0 ? true : false;
 				return inseriu;
 			}
 		});
         
-        MenuItem refreshCompleto = menu.findItem(R.id.menu_limpar);
+        MenuItem refreshCompleto = menu.findItem(R.id.menu_refresh_completo);
         refreshCompleto.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        	
+        	@Override
+        	public boolean onMenuItemClick(MenuItem item) {
+        		BoletimControl bControl = new BoletimControl();
+	        	int inseridos = bControl.atualizaBoletins(true, 
+	        			PublicacoesGUI.this);
+	        	
+	        	boolean inseriu = inseridos > 0 ? true : false;
+				return inseriu;
+        	}
+        });
+        
+        MenuItem limpar = menu.findItem(R.id.menu_limpar);
+        limpar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
         	
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
@@ -102,26 +115,7 @@ public class PublicacoesGUI extends FragmentActivity
         		Toast.makeText(PublicacoesGUI.this, linhasApagadas + 
         				" registros apagados", Toast.LENGTH_SHORT).show();
         		bRepositorio.fechar();
-        		
-        		boolean limpou = linhasApagadas > 0 ? true : false;
-        		return limpou;
-        	}
-        });
-        
-        MenuItem limpar = menu.findItem(R.id.menu_refresh_completo);
-        limpar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-        	
-        	@Override
-        	public boolean onMenuItemClick(MenuItem item) {
-        		BoletimServico bServico = new BoletimServico();
-        		boletins = bServico.baixaPublicacao(true);
-        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
-        				PublicacoesGUI.this);
-        		int qtdRegistrosInseridos = bRepositorio.inserir(boletins);
-        		bRepositorio.fechar();
-        		
-        		boolean inseriu = qtdRegistrosInseridos > 0 ? true : false;
-        		return inseriu;
+        		return true;
         	}
         });
         
@@ -176,13 +170,18 @@ public class PublicacoesGUI extends FragmentActivity
             return null;
         }
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Toast.makeText(this, "Item selecionado: " + item.getItemId(), 
+    			Toast.LENGTH_SHORT).show();
+    	return super.onOptionsItemSelected(item);
+    }
 
     /**
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
     public static class DummySectionFragment extends Fragment { //implements OnItemClickListener {
-        
-//    	AdapterLista adapter;
     	BoletimAdapter adapter;
     	ListView lista;
     	

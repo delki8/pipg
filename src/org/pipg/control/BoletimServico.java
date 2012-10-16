@@ -63,8 +63,6 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 					@Override
 					public void run(){
 						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
-//						BoletimRepositorio bRepositorio = new BoletimRepositorio();
-//						boletins = bRepositorio.listarBoletins();
 						stopSelf();
 					}
 				};
