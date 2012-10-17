@@ -23,11 +23,12 @@ public final class R {
     public static final class id {
         public static final int dataPublicacao=0x7f080003;
         public static final int listView1=0x7f080001;
-        public static final int menu_limpar=0x7f080008;
+        public static final int menu_inserir=0x7f080008;
+        public static final int menu_limpar=0x7f080007;
         public static final int menu_refresh=0x7f080004;
         public static final int menu_refresh_completo=0x7f080006;
         public static final int menu_refresh_parcial=0x7f080005;
-        public static final int menu_sobre=0x7f080007;
+        public static final int menu_sobre=0x7f080009;
         public static final int pager=0x7f080000;
         public static final int pastoral=0x7f080002;
     }

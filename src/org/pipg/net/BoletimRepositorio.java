@@ -243,11 +243,11 @@ public class BoletimRepositorio {
 	}
 	
 	public void fechar() {
-		if (db != null){
-			db.close();
-		}
 		if (dbHelper != null) {
 			dbHelper.close();
+		}
+		if (db != null){
+			db.close();
 		}
 	}
 }

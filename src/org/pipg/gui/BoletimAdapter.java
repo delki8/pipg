@@ -41,24 +41,36 @@ public class BoletimAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Boletim boletim = lista.get(position);
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-						Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.boletim_linha, null);
-		TextView pastoral = (TextView) view.findViewById(R.id.pastoral);
-		pastoral.setText(boletim.getPastoral());
 		
-		TextView dataPublicacao = (TextView) view.findViewById(R.id.dataPublicacao);
-		dataPublicacao.setText(boletim.getDataFormatada());
+		BoletimHolder bHolder;
 		
-		view.setOnClickListener(new OnClickListener() {
+		if (convertView == null) {
+			LayoutInflater li = (LayoutInflater) context.getSystemService(
+					Context.LAYOUT_INFLATER_SERVICE);
+			convertView = li.inflate(R.layout.boletim_linha, parent, false);
 			
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(context, "clicou", Toast.LENGTH_SHORT);
-			}
-		});
-		return view;
-	}
+			bHolder = new BoletimHolder();
+			bHolder.pastoral = (TextView) convertView.findViewById(R.id.pastoral);
+			bHolder.dataPublicacao = (TextView) convertView.findViewById(R.id.dataPublicacao);
+			
+			bHolder.boletim = lista.get(position);
+			convertView.setTag(bHolder);
+		
+		} else {
+			bHolder = (BoletimHolder) convertView.getTag();
+			bHolder.boletim = lista.get(position);
+		}
+		
+		bHolder.pastoral.setText(bHolder.boletim.getPastoral());
+		bHolder.dataPublicacao.setText(bHolder.boletim.getDataFormatada());
 
+		return convertView;
+	}
+	
+    private static class BoletimHolder {
+    	TextView pastoral;
+    	TextView dataPublicacao;
+    	
+    	Boletim boletim;
+    }
 }

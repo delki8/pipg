@@ -18,16 +18,22 @@
         </menu>
     </item>
     <item
-        android:id="@+id/menu_sobre"
-        android:icon="@android:drawable/ic_menu_info_details"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="Sobre"/>
-    <item
         android:id="@+id/menu_limpar"
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="Limpar"/>
+    <item
+        android:id="@+id/menu_inserir"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Inserir Testes"/>
+    <item
+        android:id="@+id/menu_sobre"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Sobre"/>
 
 </menu>

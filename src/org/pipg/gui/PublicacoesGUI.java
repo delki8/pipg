@@ -1,6 +1,9 @@
 package org.pipg.gui;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
@@ -114,6 +117,31 @@ public class PublicacoesGUI extends FragmentActivity
         		int linhasApagadas = bRepositorio.limparBanco();
         		Toast.makeText(PublicacoesGUI.this, linhasApagadas + 
         				" registros apagados", Toast.LENGTH_SHORT).show();
+        		bRepositorio.fechar();
+        		return true;
+        	}
+        });
+        
+        MenuItem inserir = menu.findItem(R.id.menu_inserir);
+        inserir.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        	
+        	@Override
+        	public boolean onMenuItemClick(MenuItem item) {
+        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
+        				PublicacoesGUI.this);
+        		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
+        		try {
+	        		for (int i = 0; i < 10; i++) {
+	        			Boletim b = new Boletim();
+	        			b.setPastoral("Pastoral Teste " + i);
+						b.setLink(new URL("http://www.google.com"));
+	        			b.setDataPublicacao(new Date());
+	        			boletins.add(b);
+					}
+        		} catch (MalformedURLException e) {
+        			e.printStackTrace();
+        		}
+        		bRepositorio.inserir(boletins);
         		bRepositorio.fechar();
         		return true;
         	}
