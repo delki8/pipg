@@ -20,6 +20,7 @@ import android.util.Log;
  * @author delki8
  * */
 public final class TrataConteudo {
+	private static final String CATEGORIA = "pipg"; 
 	
 	private static Date ultimaPublicacao;
 	
@@ -56,7 +57,7 @@ public final class TrataConteudo {
 				}
 			}
 		} catch (IOException e) {
-			Log.e("ERRO", "Erro de conexão: " + e.getMessage());
+			Log.e(CATEGORIA, "Erro de conexão: " + e.getMessage());
 		}
 		return boletins;
 	}

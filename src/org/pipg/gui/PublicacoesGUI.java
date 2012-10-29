@@ -8,14 +8,12 @@ import java.util.Date;
 import org.pipg.R;
 import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimControl;
-import org.pipg.control.BoletimServico;
 import org.pipg.net.BoletimRepositorio;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -32,8 +30,12 @@ import android.widget.Toast;
 
 public class PublicacoesGUI extends FragmentActivity 
 	implements ActionBar.TabListener {
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    
+    private static BoletimAdapter adapter;
+    private static ListView lista;
+    private Handler handler = new Handler();
     
    private static ArrayList<Boletim> boletins;
 
@@ -78,18 +80,33 @@ public class PublicacoesGUI extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_action_gui, menu);
-        
         MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_parcial);
         refreshParcial.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				BoletimControl bControl = new BoletimControl();
-	        	int inseridos = bControl.atualizaBoletins(false, 
-	        			PublicacoesGUI.this);
-	        	
-	        	boolean inseriu = inseridos > 0 ? true : false;
-				return inseriu;
+				new Thread(){
+					@Override
+					public void run() {
+						BoletimControl bControl = new BoletimControl();
+						bControl.atualizaBoletins(false, PublicacoesGUI.this);
+						
+						
+						BoletimRepositorio bRep = new BoletimRepositorio(PublicacoesGUI.this);
+						boletins = bRep.listarBoletins();
+						if (boletins != null) {
+							handler.post(new Runnable() {
+								
+								@Override
+								public void run() {
+									adapter.setLista(boletins);
+									adapter.notifyDataSetChanged();
+								}
+							});
+						}
+					}
+				}.start();
+				return true;
 			}
 		});
         
@@ -99,11 +116,8 @@ public class PublicacoesGUI extends FragmentActivity
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
         		BoletimControl bControl = new BoletimControl();
-	        	int inseridos = bControl.atualizaBoletins(true, 
-	        			PublicacoesGUI.this);
-	        	
-	        	boolean inseriu = inseridos > 0 ? true : false;
-				return inseriu;
+	        	bControl.atualizaBoletins(true, PublicacoesGUI.this);
+	        	return true;
         	}
         });
         
@@ -131,7 +145,7 @@ public class PublicacoesGUI extends FragmentActivity
         				PublicacoesGUI.this);
         		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
         		try {
-	        		for (int i = 0; i < 10; i++) {
+	        		for (int i = 0; i < 25; i++) {
 	        			Boletim b = new Boletim();
 	        			b.setPastoral("Pastoral Teste " + i);
 						b.setLink(new URL("http://www.google.com"));
@@ -201,8 +215,6 @@ public class PublicacoesGUI extends FragmentActivity
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	Toast.makeText(this, "Item selecionado: " + item.getItemId(), 
-    			Toast.LENGTH_SHORT).show();
     	return super.onOptionsItemSelected(item);
     }
 
@@ -210,9 +222,6 @@ public class PublicacoesGUI extends FragmentActivity
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
     public static class DummySectionFragment extends Fragment { //implements OnItemClickListener {
-    	BoletimAdapter adapter;
-    	ListView lista;
-    	
     	public DummySectionFragment() {
     	}
     	

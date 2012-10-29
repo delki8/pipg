@@ -45,24 +45,25 @@ public class BoletimRepositorio {
 				BoletimRepositorio.VERSAO_BANCO,
 				BoletimRepositorio.SCRIPT_DATABASE_CREATE,
 				BoletimRepositorio.SCRIPT_DATABASE_DELETE);
+		
 		db = dbHelper.getWritableDatabase();
 	}
 	
-	private BoletimRepositorio() {
+	public BoletimRepositorio() {
 		super();
 	}
 	
 	/* Insere ou atualiza um boletim, privado at'e
 	 * eu ter certeza de quem vai acessar.*/
-	private long salvar(Boletim boletim) {
-		long id = boletim.getId();
-		if (id != 0){
-			atualizar(boletim);
-		} else {
-			id = inserir(boletim);
-		}
-		return id;
-	}
+//	private long salvar(Boletim boletim) {
+//		long id = boletim.getId();
+//		if (id != 0){
+//			atualizar(boletim);
+//		} else {
+//			id = inserir(boletim);
+//		}
+//		return id;
+//	}
 	
 	/**
 	 * Assinatura do método inserir para inserir uma lista de boletins;
@@ -71,11 +72,11 @@ public class BoletimRepositorio {
 	 * @return True se deu tudo certo e false se deu algum problema;
 	 * */
 	
-	public int inserir(ArrayList<Boletim> boletins){
+	public int inserir(ArrayList<Boletim> boletins) {
 		int qtdRegistros = 0;
 		for (Boletim boletim : boletins) {
 			Boletim b = buscarPelaPastoral(boletim);
-			if (b == null){
+			if (b == null) {
 				long id = inserir(boletim);
 				if (id > 0) {
 					qtdRegistros++;
@@ -99,23 +100,23 @@ public class BoletimRepositorio {
 		return id;
 	}
 	
-	private int atualizar(Boletim boletim) {
-		ContentValues values = new ContentValues();
-		values.put(Boletins.PASTORAL, boletim.getPastoral());
-		values.put(Boletins.DATAPUB, boletim.getPastoral());
-		String _id = String.valueOf(boletim.getId());
-		String where = Boletins._ID + "=? ";
-		String whereArgs[] = new String[] { _id };
-		int count = atualizar(values, where, whereArgs);
-		return count;
-	}
+//	private int atualizar(Boletim boletim) {
+//		ContentValues values = new ContentValues();
+//		values.put(Boletins.PASTORAL, boletim.getPastoral());
+//		values.put(Boletins.DATAPUB, boletim.getPastoral());
+//		String _id = String.valueOf(boletim.getId());
+//		String where = Boletins._ID + "=? ";
+//		String whereArgs[] = new String[] { _id };
+//		int count = atualizar(values, where, whereArgs);
+//		return count;
+//	}
 	
-	private int atualizar(ContentValues values, String where, 
-			String[] whereArgs) {
-		int count = db.update(NOME_TABELA, values, where, whereArgs);
-		Log.i(CATEGORIA, "Atualizou [" + count + "] registros");
-		return count;
-	}
+//	private int atualizar(ContentValues values, String where, 
+//			String[] whereArgs) {
+//		int count = db.update(NOME_TABELA, values, where, whereArgs);
+//		Log.i(CATEGORIA, "Atualizou [" + count + "] registros");
+//		return count;
+//	}
 	
 	/**Apaga todos os boletins do banco.
 	 * @return linhasAfetadas é a quantidade de linhas afetadas.
@@ -146,19 +147,19 @@ public class BoletimRepositorio {
 		return count;
 	}
 	
-	private Boletim buscarBoletim(long id) {
-		Cursor c = db.query(true, NOME_TABELA, Boletim.colunas, 
-				Boletins._ID + "=" + id, null, null, null, null, null);
-		if (c.getCount() > 0) {
-			c.moveToFirst();
-			Boletim boletim = new Boletim();
-			boletim = populaBoletim(c);
-			c.close();
-			return boletim;
-		}
-		c.close();
-		return null;
-	}
+//	private Boletim buscarBoletim(long id) {
+//		Cursor c = db.query(true, NOME_TABELA, Boletim.colunas, 
+//				Boletins._ID + "=" + id, null, null, null, null, null);
+//		if (c.getCount() > 0) {
+//			c.moveToFirst();
+//			Boletim boletim = new Boletim();
+//			boletim = populaBoletim(c);
+//			c.close();
+//			return boletim;
+//		}
+//		c.close();
+//		return null;
+//	}
 	
 	private Boletim buscarPelaPastoral(Boletim boletim) {
 		String where = Boletins.PASTORAL + "=?";
@@ -177,8 +178,9 @@ public class BoletimRepositorio {
 	
 	private Cursor getCursor() {
 		try {
-			return db.query(NOME_TABELA, Boletim.colunas, null, null, null, 
-					null, null, null);
+			Cursor c = db.query(NOME_TABELA, Boletim.colunas, null, null, 
+					null, null, null, null);
+			return c; 
 		} catch (SQLException e) {
 			Log.e(CATEGORIA, "Erro ao buscar os boletins: " + e.toString());
 			return null;
@@ -199,13 +201,13 @@ public class BoletimRepositorio {
 		return boletins;
 	}
 	
-	private Cursor query(SQLiteQueryBuilder queryBuilder, String[] projection,
-			String where, String[] whereArgs, String groupBy, String having,
-			String orderBy){
-			Cursor c = queryBuilder.query(this.db, projection, where, whereArgs, 
-					groupBy, having, orderBy);
-			return c;
-	}
+//	private Cursor query(SQLiteQueryBuilder queryBuilder, String[] projection,
+//			String where, String[] whereArgs, String groupBy, String having,
+//			String orderBy){
+//			Cursor c = queryBuilder.query(this.db, projection, where, whereArgs, 
+//					groupBy, having, orderBy);
+//			return c;
+//	}
 	
 	/**
 	 * Popula um boletim com dados que vierem de um cursor.

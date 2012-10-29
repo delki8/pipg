@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import org.pipg.beans.Boletim;
 import org.pipg.net.BoletimRepositorio;
+import org.pipg.net.TrataConteudo;
 
 import android.content.Context;
-import android.widget.Toast;
 
 public class BoletimControl {
 	
@@ -16,15 +16,10 @@ public class BoletimControl {
 	 * os 10 últimos boletins.
 	 * @param contexto da activity que está atualizando os boletins.
 	 * */
-	public int atualizaBoletins(Boolean atualizacaoCompleta, Context context) {
-		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
-		BoletimServico bServico = new BoletimServico();
-    	boletins = bServico.baixaPublicacao(atualizacaoCompleta);
-    	BoletimRepositorio bRepositorio = new BoletimRepositorio(context);
-    	int inseridos = bRepositorio.inserir(boletins);
-    	Toast.makeText(context, inseridos + 
-				" registros inseridos", Toast.LENGTH_SHORT).show();
-    	bRepositorio.fechar();
-    	return inseridos;
+	public void atualizaBoletins(Boolean atualizacaoCompleta, Context context) {
+		BoletimRepositorio bRep = new BoletimRepositorio(context);
+		String url = "http://pipg.org/index.cfm?p=bulletins";
+		ArrayList<Boletim> bols = TrataConteudo.pegarListaBoletim(url);
+		bRep.inserir(bols);
 	}
 }

@@ -3,15 +3,15 @@ package org.pipg.control;
 import java.util.ArrayList;
 
 import org.pipg.beans.Boletim;
+import org.pipg.net.BoletimRepositorio;
 import org.pipg.net.TrataConteudo;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 public class BoletimServico extends Service implements PublicacaoInterface<Boletim>{
-	private final String ERRO = "PIPG-Erro";
 	private static final String URL_ATUALIZACAO_PARCIAL = 
 			"http://pipg.org/index.cfm?p=bulletins";
 	
@@ -25,7 +25,6 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 	@Override
 	public void onCreate(){
 		super.onCreate();
-		baixaPublicacao(false);
 	}
 	
 	@Override
@@ -33,11 +32,10 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 		super.onDestroy();
 	}
 	
-	public ArrayList<Boletim> baixaPublicacao(Boolean atualizacaoCompleta){
-		Thread t = null;
-		try {
-			if (atualizacaoCompleta){
-				t = new Thread("baixaBoletinsCompleta"){
+	public void baixaPublicacao(Boolean completa, Context ctx){
+		final BoletimRepositorio bRepositorio = new BoletimRepositorio(ctx);
+			if (completa){
+				new Thread("baixaBoletinsCompleta"){
 					@Override
 					public void run(){
 						Boolean euDevoContinuarBuscando = true;
@@ -52,28 +50,21 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 							}
 							nPagina++;
 						}
-						for (Boletim boletim : boletins) {
-							Log.i("boletim", boletim.getPastoral() + " " + boletim.getDataPublicacao());
-						}
+						
 						stopSelf();
 					}
-				};
+				}.start();
 			} else {
-				t = new Thread("baixaBoletinsParcial"){
+				new Thread("baixaBoletinsParcial"){
 					@Override
 					public void run(){
 						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
 						stopSelf();
 					}
-				};
+				}.start();
 			}
 		
-			t.start();
-			t.join();
-		} catch (InterruptedException e) {
-			Log.i(ERRO, "Erro na thread: " + e.getMessage());
-		}
-		return boletins;
+			bRepositorio.inserir(boletins);
 	}
 
 	@Override

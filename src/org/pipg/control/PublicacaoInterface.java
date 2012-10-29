@@ -1,9 +1,9 @@
 package org.pipg.control;
 
-import java.util.ArrayList;
+import android.content.Context;
 
 public interface PublicacaoInterface<Tipo> {
-	ArrayList<Tipo> baixaPublicacao(Boolean atualizacaoCompleta);
+	public void baixaPublicacao(Boolean atualizacaoCompleta, Context ctx);
 	
 	public PublicacaoInterface<Tipo> getInstance();
 }

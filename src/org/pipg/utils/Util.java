@@ -19,8 +19,9 @@ public class Util {
 	 * */
 	public static Date dataStringDate(String dataString) {
 	    try {
+	    	dataString = dataString.replace("BRT ", "");
 	    	SimpleDateFormat sdf = 
-	    			new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+	    			new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy", Locale.US);
 	    	Date data = sdf.parse(dataString);
 	    	return data;
 		} catch (ParseException e) {
@@ -35,10 +36,13 @@ public class Util {
 	 * @return dataFormatada de acordo com o formato informado. 
 	 * */
 	public static String dataDateString(Date data, String formato) {
-		String dataFormatada = null;
-		SimpleDateFormat sdf = new SimpleDateFormat(formato);
-		dataFormatada = sdf.format(data);
-		return dataFormatada;
+		if (data != null) {
+			String dataFormatada = null;
+			SimpleDateFormat sdf = new SimpleDateFormat(formato);
+			dataFormatada = sdf.format(data);
+			return dataFormatada;
+		}
+		return null;
 	}
 	
 	/** Recebe uma String de data no formato "EEE MMM dd HH:mm:ss zzz yyyy"
@@ -47,9 +51,12 @@ public class Util {
 	 * @return dataFormatada no formato "dd/MM/yyyy"
 	 * */
 	public static String dataStringString(String dataString) {
-		Date data = dataStringDate(dataString);
-		String dataFormatada = dataDateString(data, "dd/MM/yyyy");
-		return dataFormatada;
+		if (dataString != null) {
+			Date data = dataStringDate(dataString);
+			String dataFormatada = dataDateString(data, "dd/MM/yyyy");
+			return dataFormatada;
+		}
+		return null;
 	}
 	
 	/** Pega uma String no formato informado e transforma num java.util.Date

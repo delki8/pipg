@@ -8,11 +8,9 @@ import org.pipg.beans.Boletim;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BoletimAdapter extends BaseAdapter {
 	private Context context;
@@ -73,4 +71,12 @@ public class BoletimAdapter extends BaseAdapter {
     	
     	Boletim boletim;
     }
+
+//	public List<Boletim> getLista() {
+//		return lista;
+//	}
+
+	public void setLista(List<Boletim> lista) {
+		this.lista = lista;
+	}
 }
