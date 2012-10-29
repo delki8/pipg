@@ -17,8 +17,10 @@ public final class R {
         public static final int verdeClaro=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int refresh_dark=0x7f020001;
+        public static final int collectionsviewaslist=0x7f020000;
+        public static final int contentdiscard=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int navigationrefresh=0x7f020003;
     }
     public static final class id {
         public static final int dataPublicacao=0x7f080002;
@@ -50,6 +52,8 @@ public final class R {
     public static final class style {
         public static final int AppTheme=0x7f060000;
         public static final int MyActionBar=0x7f060002;
+        /**  <item name="android:actionBarStyle">@style/MyActionBar</item> 
+         */
         public static final int MyTheme=0x7f060001;
     }
 }
