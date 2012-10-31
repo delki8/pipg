@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/navigationrefresh"
+        android:showAsAction="always">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+            <item
+                android:id="@+id/menu_refresh_parcial"
+                android:icon="@android:drawable/stat_sys_download"
+                android:showAsAction="always"
+                android:title="Parcial"/>
+            <item
+                android:id="@+id/menu_refresh_completo"
+                android:icon="@android:drawable/stat_sys_download"
+                android:showAsAction="always"
+                android:title="Completo"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_limpar"
+        android:icon="@drawable/contentdiscard"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Limpar"/>
+    <item
+        android:id="@+id/menu_inserir"
+        android:icon="@drawable/collectionsviewaslist"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="Inserir Testes"/>
+    <item
+        android:id="@+id/menu_sobre"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Sobre"/>
+
+</menu>
