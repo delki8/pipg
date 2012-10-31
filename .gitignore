@@ -1,4 +1,2 @@
-*.class
-bin/AndroidManifest.xml
-bin/jarlist.cache
 bin/*
+gen/*

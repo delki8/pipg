@@ -4,22 +4,26 @@ import java.util.List;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
+import org.pipg.net.DownloaderThread;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class BoletimAdapter extends BaseAdapter {
-	private Context context;
+	private PublicacoesGUI activityPai;
 	private List<Boletim> lista; 
+	private Thread downloaderThread;
 	
-	public BoletimAdapter(Context context, List<Boletim> lista) {
+	public BoletimAdapter(PublicacoesGUI activityPai, List<Boletim> lista) {
 		super();
-		this.context = context;
+		this.activityPai = activityPai;
 		this.lista = lista;
+		downloaderThread = null;
 	}
 
 	@Override
@@ -43,13 +47,15 @@ public class BoletimAdapter extends BaseAdapter {
 		BoletimHolder bHolder;
 		
 		if (convertView == null) {
-			LayoutInflater li = (LayoutInflater) context.getSystemService(
+			LayoutInflater li = (LayoutInflater) activityPai.getSystemService(
 					Context.LAYOUT_INFLATER_SERVICE);
 			convertView = li.inflate(R.layout.boletim_linha, parent, false);
+			
 			
 			bHolder = new BoletimHolder();
 			bHolder.pastoral = (TextView) convertView.findViewById(R.id.pastoral);
 			bHolder.dataPublicacao = (TextView) convertView.findViewById(R.id.dataPublicacao);
+			bHolder.link = (TextView) convertView.findViewById(R.id.link);
 			
 			bHolder.boletim = lista.get(position);
 			convertView.setTag(bHolder);
@@ -61,13 +67,25 @@ public class BoletimAdapter extends BaseAdapter {
 		
 		bHolder.pastoral.setText(bHolder.boletim.getPastoral());
 		bHolder.dataPublicacao.setText(bHolder.boletim.getDataFormatada());
+		bHolder.link.setText(bHolder.boletim.getLink().toString());
 
+		convertView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TextView urlInputField =  (TextView) v.findViewById(R.id.link);
+				String urlInput = urlInputField.getText().toString();
+				downloaderThread = new DownloaderThread(activityPai, urlInput);
+				downloaderThread.start();
+			}
+		});
+		
 		return convertView;
 	}
 	
     private static class BoletimHolder {
     	TextView pastoral;
     	TextView dataPublicacao;
+    	TextView link;
     	
     	Boletim boletim;
     }

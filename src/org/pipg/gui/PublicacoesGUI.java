@@ -3,17 +3,21 @@ package org.pipg.gui;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimControl;
 import org.pipg.net.BoletimRepositorio;
+import org.pipg.net.DownloaderThread;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -30,35 +34,39 @@ import android.widget.Toast;
 
 public class PublicacoesGUI extends FragmentActivity 
 	implements ActionBar.TabListener {
+	
+	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
+	public static final int MESSAGE_DOWNLOAD_COMPLETE = 1001;
+	public static final int MESSAGE_UPDATE_PROGRESS_BAR = 1002;
+	public static final int MESSAGE_DOWNLOAD_CANCELED = 1003;
+	public static final int MESSAGE_CONNECTING_STARTED = 1004;
+	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
+	
+	private static PublicacoesGUI thisActivity;
+	private ProgressDialog progressDialog;
+
 	private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     
-    private static BoletimAdapter adapter;
-    private static ListView lista;
-    private Handler handler = new Handler();
-    
-   private static ArrayList<Boletim> boletins;
-
+	private static BoletimAdapter adapter;
+	private static ListView lista;
+	private static ArrayList<Boletim> boletins;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gui);
-        // Create the adapter that will return a fragment for each of the three 
-        // primary sections of the app.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(
-        		getSupportFragmentManager());
+    	super.onCreate(savedInstanceState);
+    	setContentView(R.layout.activity_gui);
+        thisActivity = this;
+        progressDialog = null;
+    	
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        // When swiping between different sections, select the corresponding tab.
-        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-        // Tab.
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -66,14 +74,10 @@ public class PublicacoesGUI extends FragmentActivity
             }
         });
 
-        // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
             actionBar.addTab(actionBar.newTab()
             		.setText(mSectionsPagerAdapter.getPageTitle(i))
-            		.setTabListener(this));
+            		.setTabListener(thisActivity));
         }
     }
 
@@ -89,21 +93,7 @@ public class PublicacoesGUI extends FragmentActivity
 					@Override
 					public void run() {
 						BoletimControl bControl = new BoletimControl();
-						bControl.atualizaBoletins(false, PublicacoesGUI.this);
-						
-						
-						BoletimRepositorio bRep = new BoletimRepositorio(PublicacoesGUI.this);
-						boletins = bRep.listarBoletins();
-						if (boletins != null) {
-							handler.post(new Runnable() {
-								
-								@Override
-								public void run() {
-									adapter.setLista(boletins);
-									adapter.notifyDataSetChanged();
-								}
-							});
-						}
+						bControl.atualizaBoletins(false, thisActivity);
 					}
 				}.start();
 				return true;
@@ -116,7 +106,7 @@ public class PublicacoesGUI extends FragmentActivity
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
         		BoletimControl bControl = new BoletimControl();
-	        	bControl.atualizaBoletins(true, PublicacoesGUI.this);
+	        	bControl.atualizaBoletins(true, thisActivity);
 	        	return true;
         	}
         });
@@ -127,9 +117,9 @@ public class PublicacoesGUI extends FragmentActivity
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
         		BoletimRepositorio bRepositorio = new BoletimRepositorio(
-        				PublicacoesGUI.this);
+        				thisActivity);
         		int linhasApagadas = bRepositorio.limparBanco();
-        		Toast.makeText(PublicacoesGUI.this, linhasApagadas + 
+        		Toast.makeText(thisActivity, linhasApagadas + 
         				" registros apagados", Toast.LENGTH_SHORT).show();
         		bRepositorio.fechar();
         		return true;
@@ -141,8 +131,7 @@ public class PublicacoesGUI extends FragmentActivity
         	
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
-        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
-        				PublicacoesGUI.this);
+        		BoletimRepositorio bRepositorio = new BoletimRepositorio(thisActivity);
         		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
         		try {
 	        		for (int i = 0; i < 25; i++) {
@@ -177,6 +166,12 @@ public class PublicacoesGUI extends FragmentActivity
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
+    
+    private void atualizaAdapter(Collection<Boletim> bols) {
+		boletins.clear();
+		boletins.addAll(bols);
+		adapter.notifyDataSetChanged();
+	}
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
@@ -222,8 +217,7 @@ public class PublicacoesGUI extends FragmentActivity
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
     public static class DummySectionFragment extends Fragment { //implements OnItemClickListener {
-    	public DummySectionFragment() {
-    	}
+    	public DummySectionFragment() {};
     	
         public static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -234,11 +228,172 @@ public class PublicacoesGUI extends FragmentActivity
 			BoletimRepositorio bRepositorio = new BoletimRepositorio(getActivity());
 			boletins = bRepositorio.listarBoletins();
 
-        	adapter = new BoletimAdapter(getActivity(), boletins);
+        	adapter = new BoletimAdapter(thisActivity, boletins);
         	lista = new ListView(getActivity());
         	lista.setAdapter(adapter);
 
             return lista;
         }
+	}
+    
+	/**
+	 * This is the Handler for this acitivy. It will receive messages from the
+	 * {@link DownloaderThread} and make the necessary updates to the UI.
+	 * */
+	public Handler activityHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			/*
+			 * Handling MESSAGE_UPDATE_PROGRESS_BAR:
+			 * 1. Get the current prorfess, as indicated in arg1 field
+			 * of the Message.
+			 * 2. Update the progress bar.
+			 * */
+			case MESSAGE_UPDATE_PROGRESS_BAR:
+				if (progressDialog != null) {
+					int currentProgress = msg.arg1;
+					progressDialog.setProgress(currentProgress);
+				}
+				break;
+			/*
+			 * Handling MESSAGE_CONNECTING_STARTED:
+			 * 1. Get the URL of the file being downloaded. This is stored
+			 * in the obj field of the Message.
+			 * 2. Create an indeterminate progress bar;
+			 * 3. Show the progress bar.
+			 * */
+			case MESSAGE_CONNECTING_STARTED:
+				if (msg.obj != null && msg.obj instanceof String) {
+					String url = (String) msg.obj;
+					// truncate the url
+					if (url.length() > 16) {
+						String tUrl = url.substring(0, 15);
+						tUrl += "...";
+						url = tUrl;
+					}
+					String pdTitle = thisActivity.getString(
+							R.string.progress_dialog_title_connecting);
+					String pdMsg = thisActivity.getString(
+							R.string.progress_dialog_message_prefix_connecting);
+					pdMsg += " " + url;
+					
+					dismissCurrentProgressDialog();
+					progressDialog = new ProgressDialog(thisActivity);
+					progressDialog.setTitle(pdTitle);
+					progressDialog.setMessage(pdMsg);
+					progressDialog.setProgressStyle(
+							ProgressDialog.STYLE_SPINNER);
+					progressDialog.setIndeterminate(true);
+					// set the message to be sent when this dialog is canceled
+					Message newMsg = Message.obtain(this, 
+							MESSAGE_DOWNLOAD_CANCELED);
+					progressDialog.setCancelMessage(newMsg);
+					progressDialog.show();
+				}
+				break;
+			/*
+			 * Handling MESSAGE_DOWNLOAD_STARTED:
+			 * 1. Create a progress bar with specified max value and current
+			 * value 0; assign it to progressDialog. The arg1 field will
+			 * contain the max value.
+			 * 2. Set the title and text for the progress bar. The obj
+			 * field of the Message will contain a String that
+			 * represents the name of the file being downloaded.
+			 * 3. Set the message that shoud be sent if dialog is canceled.
+			 * 4. Make the progress bar visible.
+			 * */
+			case MESSAGE_DOWNLOAD_STARTED:
+				// obj will contain a String representing the file name
+				if (msg.obj != null && msg.obj instanceof String) {
+					int maxValue = msg.arg1;
+					String fileName = (String) msg.obj;
+					String pdTitle = thisActivity.getString(
+							R.string.progress_dialog_title_downloading);
+					String pdMsg = thisActivity.getString(
+							R.string.progress_dialog_message_prefix_downloading);
+					pdMsg += " " + fileName;
+					
+					dismissCurrentProgressDialog();
+					progressDialog = new ProgressDialog(thisActivity);
+					progressDialog.setTitle(pdTitle);
+					progressDialog.setMessage(pdMsg);
+					progressDialog.setProgressStyle(
+							ProgressDialog.STYLE_HORIZONTAL);
+					progressDialog.setProgress(0);
+					progressDialog.setMax(maxValue);
+					// set the message to be sent when this dialog is canceled
+					Message newMsg = Message.obtain(this, 
+							MESSAGE_DOWNLOAD_CANCELED);
+					progressDialog.setCancelMessage(newMsg);
+					progressDialog.setCancelable(true);
+					progressDialog.show();
+				}
+				break;
+			/*
+			 * Handling MESSAGE_DOWNLOAD_COMPLETE
+			 * 1. Remove the progress bar from the screen.
+			 * 2. Display Toast that says download is complete.
+			 * */
+			case MESSAGE_DOWNLOAD_COMPLETE:
+				dismissCurrentProgressDialog();
+				displayMessage(getString(
+						R.string.user_message_download_complete));
+				break;
+			/*
+			 * Handling MESSAGE_DOWNLOAD_CANCELED:
+			 * 1. Interrupt the downloader thread.
+			 * 2. Remove the progress bar from the screen.
+			 * 3. Display Toast that says download is complete.
+			 * */
+			case MESSAGE_DOWNLOAD_CANCELED:
+//				if (downloaderThread != null) {
+//					downloaderThread.interrupt();
+//				}
+//				dismissCurrentProgressDialog();
+//				displayMessage(getString(
+//						R.string.user_message_download_canceled));
+				break;
+			/*
+			 * Handling MESSAGE_ENCOUNTERED_ERROR:
+			 * 1. Check the obj field of the message for the actual error
+			 * message that will be displayed to the user.
+			 * 2. Remove any progress bars from the screen.
+			 * 3. Display a Toast with the error message.
+			 * */
+			case MESSAGE_ENCOUNTERED_ERROR:
+				// obj will contain a string representing the error message
+				if (msg.obj != null && msg.obj instanceof String) {
+					String errorMessage = (String) msg.obj;
+					dismissCurrentProgressDialog();
+					displayMessage(errorMessage);
+				}
+				break;
+			default:
+				// nothing to do here
+				break;
+			}
+		}
+	};
+	
+	/**
+	 * If there is a progress dialog, dismiss it and set progressDialog 
+	 * to null.
+	 * */
+	public void dismissCurrentProgressDialog() {
+		if (progressDialog != null) {
+			progressDialog.hide();
+			progressDialog.dismiss();
+			progressDialog = null;
+		}
+	}
+	
+	/**
+	 * Display a message to the user, in the form of a Toast.
+	 * @param message Message to be displayed.
+	 * */
+	public void displayMessage(String message) {
+		if (message != null) {
+			Toast.makeText(thisActivity, message, Toast.LENGTH_SHORT).show();
+		}
 	}
 }
