@@ -26,7 +26,6 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 	@Override
 	public void onCreate(){
 		super.onCreate();
-		baixaPublicacao(false);
 	}
 	
 	@Override
@@ -62,7 +61,7 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 					public void run(){
 						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
 						for (Boletim boletim : boletins) {
-							Log.i("boletim", boletim.getPastoral() + " " + boletim.getDataPublicacao() + " " + boletim.getDataDoBoletim());
+							Log.i("boletim", boletim.getPastoral() + " " + boletim.getDataPublicacao() + " " + boletim.getData());
 						}
 						stopSelf();
 					}
