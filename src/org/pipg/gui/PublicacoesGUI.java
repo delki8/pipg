@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.pipg.R;
 import org.pipg.beans.Boletim;
@@ -41,7 +42,11 @@ public class PublicacoesGUI extends FragmentActivity
 	public static final int MESSAGE_DOWNLOAD_CANCELED = 1003;
 	public static final int MESSAGE_CONNECTING_STARTED = 1004;
 	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
+	public static final int MESSAGE_TERMINOU_UPDATE = 1006;
+	public static final int MESSAGE_TERMINOU_LIMPAR = 1007;
 	
+	private static final String LOG = "pipg";
+
 	private static PublicacoesGUI thisActivity;
 	private ProgressDialog progressDialog;
 
@@ -59,7 +64,8 @@ public class PublicacoesGUI extends FragmentActivity
         thisActivity = this;
         progressDialog = null;
     	
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(
+        		getSupportFragmentManager());
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -67,17 +73,17 @@ public class PublicacoesGUI extends FragmentActivity
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mViewPager.setOnPageChangeListener(new ViewPager
+        		.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
             }
         });
-
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            actionBar.addTab(actionBar.newTab()
-            		.setText(mSectionsPagerAdapter.getPageTitle(i))
-            		.setTabListener(thisActivity));
+        	actionBar.addTab(actionBar.newTab()
+        			.setText(mSectionsPagerAdapter.getPageTitle(i))
+        			.setTabListener(thisActivity));
         }
     }
 
@@ -85,7 +91,8 @@ public class PublicacoesGUI extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_action_gui, menu);
         MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_parcial);
-        refreshParcial.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+        refreshParcial.setOnMenuItemClickListener(
+        		new OnMenuItemClickListener() {
 			
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
@@ -122,6 +129,7 @@ public class PublicacoesGUI extends FragmentActivity
         		Toast.makeText(thisActivity, linhasApagadas + 
         				" registros apagados", Toast.LENGTH_SHORT).show();
         		bRepositorio.fechar();
+        		atualizaAdapter(new ArrayList<Boletim>());
         		return true;
         	}
         });
@@ -154,24 +162,29 @@ public class PublicacoesGUI extends FragmentActivity
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabUnselected(ActionBar.Tab tab, 
+    		FragmentTransaction fragmentTransaction) {
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabSelected(ActionBar.Tab tab, 
+    		FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabReselected(ActionBar.Tab tab, 
+    		FragmentTransaction fragmentTransaction) {
     }
     
     private void atualizaAdapter(Collection<Boletim> bols) {
 		boletins.clear();
 		boletins.addAll(bols);
-		adapter.notifyDataSetChanged();
-	}
+//		adapter.setLista(boletins);
+		ListView l = (ListView) findViewById(SectionFragment.ID_MAIN_LIST);
+		l.setAdapter(adapter);
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
@@ -179,15 +192,16 @@ public class PublicacoesGUI extends FragmentActivity
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+
+		public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
-            Fragment fragment = new DummySectionFragment();
+            Fragment fragment = new SectionFragment();
             Bundle args = new Bundle();
-            args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
+            args.putInt(SectionFragment.ARG_SECTION_NUMBER, i + 1);
             fragment.setArguments(args);
             return fragment;
         }
@@ -200,9 +214,12 @@ public class PublicacoesGUI extends FragmentActivity
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: return getString(R.string.title_boletins).toUpperCase();
-                case 1: return getString(R.string.title_audios).toUpperCase();
-                case 2: return getString(R.string.title_videos).toUpperCase();
+                case 0: return getString(R.string.title_boletins)
+                		.toUpperCase();
+                case 1: return getString(R.string.title_audios)
+                		.toUpperCase();
+                case 2: return getString(R.string.title_videos)
+                		.toUpperCase();
             }
             return null;
         }
@@ -216,10 +233,11 @@ public class PublicacoesGUI extends FragmentActivity
     /**
      * A dummy fragment representing a section of the app, but that simply displays dummy text.
      */
-    public static class DummySectionFragment extends Fragment { //implements OnItemClickListener {
-    	public DummySectionFragment() {};
+    public static class SectionFragment extends Fragment { //implements OnItemClickListener {
+    	public SectionFragment() {};
     	
         public static final String ARG_SECTION_NUMBER = "section_number";
+        public static final int ID_MAIN_LIST = 2000;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -230,6 +248,7 @@ public class PublicacoesGUI extends FragmentActivity
 
         	adapter = new BoletimAdapter(thisActivity, boletins);
         	lista = new ListView(getActivity());
+        	lista.setId(ID_MAIN_LIST);
         	lista.setAdapter(adapter);
 
             return lista;
@@ -367,6 +386,22 @@ public class PublicacoesGUI extends FragmentActivity
 					dismissCurrentProgressDialog();
 					displayMessage(errorMessage);
 				}
+				break;
+			/*
+			 * Tratando MESSAGE_TERMINOU_UPDATE
+			 * 1. Instancia o repositorio de boletins e atualiza a lista
+			 *	de boletins recém cadastrados.
+			 * 2. Pega a nova lista de boletins e manda para o método de 
+			 * 	atualização da tela.
+			 * */
+			case MESSAGE_TERMINOU_UPDATE:
+				BoletimRepositorio br = new BoletimRepositorio(thisActivity);
+				List<Boletim> bols = br.listarBoletins();
+				atualizaAdapter(bols);
+				break;
+				
+			case MESSAGE_TERMINOU_LIMPAR:
+				atualizaAdapter(new ArrayList<Boletim>());
 				break;
 			default:
 				// nothing to do here
