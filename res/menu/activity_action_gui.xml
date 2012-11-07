@@ -6,15 +6,15 @@
         android:showAsAction="always">
         <menu xmlns:android="http://schemas.android.com/apk/res/android" >
             <item
-                android:id="@+id/menu_refresh_parcial"
-                android:icon="@android:drawable/stat_sys_download"
+                android:id="@+id/menu_refresh_recentes"
+                android:icon="@drawable/av_download"
                 android:showAsAction="always"
-                android:title="Parcial"/>
+                android:title="Recentes"/>
             <item
-                android:id="@+id/menu_refresh_completo"
-                android:icon="@android:drawable/stat_sys_download"
+                android:id="@+id/menu_refresh_todos"
+                android:icon="@drawable/av_download"
                 android:showAsAction="always"
-                android:title="Completo"/>
+                android:title="Todos"/>
         </menu>
     </item>
     <item

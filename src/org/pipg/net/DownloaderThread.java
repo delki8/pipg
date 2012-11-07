@@ -19,6 +19,8 @@ public class DownloaderThread extends Thread{
 	
 	//constantes
 	private static final int DOWNLOAD_BUFFER_SIZE = 4096;
+	private static final File DIR_EXTERNO = new File(Environment
+			.getExternalStorageDirectory() + "/pipg/");
 	
 	private PublicacoesGUI parentActivity;
 	private String downloadUrl;
@@ -86,8 +88,8 @@ public class DownloaderThread extends Thread{
 			
 			// start download
 			inStream = new BufferedInputStream(conn.getInputStream());
-			outFile = new File(Environment.getExternalStorageDirectory() +
-					"/" + fileName);
+			DIR_EXTERNO.mkdirs();
+			outFile = new File(DIR_EXTERNO, fileName);
 			fileStream = new FileOutputStream(outFile);
 			outStream = new BufferedOutputStream(fileStream, 
 					DOWNLOAD_BUFFER_SIZE);

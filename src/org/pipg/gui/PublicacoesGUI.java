@@ -90,7 +90,7 @@ public class PublicacoesGUI extends FragmentActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_action_gui, menu);
-        MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_parcial);
+        MenuItem refreshParcial = menu.findItem(R.id.menu_refresh_recentes);
         refreshParcial.setOnMenuItemClickListener(
         		new OnMenuItemClickListener() {
 			
@@ -107,7 +107,7 @@ public class PublicacoesGUI extends FragmentActivity
 			}
 		});
         
-        MenuItem refreshCompleto = menu.findItem(R.id.menu_refresh_completo);
+        MenuItem refreshCompleto = menu.findItem(R.id.menu_refresh_todos);
         refreshCompleto.setOnMenuItemClickListener(new OnMenuItemClickListener() {
         	
         	@Override
@@ -264,9 +264,9 @@ public class PublicacoesGUI extends FragmentActivity
 			switch (msg.what) {
 			/*
 			 * Handling MESSAGE_UPDATE_PROGRESS_BAR:
-			 * 1. Get the current prorfess, as indicated in arg1 field
-			 * of the Message.
-			 * 2. Update the progress bar.
+			 * 1. 	Get the current prorfess, as indicated in arg1 field
+			 * 		of the Message.
+			 * 2. 	Update the progress bar.
 			 * */
 			case MESSAGE_UPDATE_PROGRESS_BAR:
 				if (progressDialog != null) {
@@ -276,10 +276,10 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Handling MESSAGE_CONNECTING_STARTED:
-			 * 1. Get the URL of the file being downloaded. This is stored
-			 * in the obj field of the Message.
-			 * 2. Create an indeterminate progress bar;
-			 * 3. Show the progress bar.
+			 * 1. 	Get the URL of the file being downloaded. This is stored
+			 * 		in the obj field of the Message.
+			 * 2. 	Create an indeterminate progress bar;
+			 * 3. 	Show the progress bar.
 			 * */
 			case MESSAGE_CONNECTING_STARTED:
 				if (msg.obj != null && msg.obj instanceof String) {
@@ -312,14 +312,14 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Handling MESSAGE_DOWNLOAD_STARTED:
-			 * 1. Create a progress bar with specified max value and current
-			 * value 0; assign it to progressDialog. The arg1 field will
-			 * contain the max value.
-			 * 2. Set the title and text for the progress bar. The obj
-			 * field of the Message will contain a String that
-			 * represents the name of the file being downloaded.
-			 * 3. Set the message that shoud be sent if dialog is canceled.
-			 * 4. Make the progress bar visible.
+			 * 1. 	Create a progress bar with specified max value and current
+			 * 		value 0; assign it to progressDialog. The arg1 field will
+			 * 		contain the max value.
+			 * 2. 	Set the title and text for the progress bar. The obj
+			 * 		field of the Message will contain a String that
+			 * 		represents the name of the file being downloaded.
+			 * 3. 	Set the message that shoud be sent if dialog is canceled.
+			 * 4. 	Make the progress bar visible.
 			 * */
 			case MESSAGE_DOWNLOAD_STARTED:
 				// obj will contain a String representing the file name
@@ -350,8 +350,8 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Handling MESSAGE_DOWNLOAD_COMPLETE
-			 * 1. Remove the progress bar from the screen.
-			 * 2. Display Toast that says download is complete.
+			 * 1. 	Remove the progress bar from the screen.
+			 * 2. 	Display Toast that says download is complete.
 			 * */
 			case MESSAGE_DOWNLOAD_COMPLETE:
 				dismissCurrentProgressDialog();
@@ -360,9 +360,9 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Handling MESSAGE_DOWNLOAD_CANCELED:
-			 * 1. Interrupt the downloader thread.
-			 * 2. Remove the progress bar from the screen.
-			 * 3. Display Toast that says download is complete.
+			 * 1. 	Interrupt the downloader thread.
+			 * 2. 	Remove the progress bar from the screen.
+			 * 3. 	Display Toast that says download is complete.
 			 * */
 			case MESSAGE_DOWNLOAD_CANCELED:
 //				if (downloaderThread != null) {
@@ -374,10 +374,10 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Handling MESSAGE_ENCOUNTERED_ERROR:
-			 * 1. Check the obj field of the message for the actual error
-			 * message that will be displayed to the user.
-			 * 2. Remove any progress bars from the screen.
-			 * 3. Display a Toast with the error message.
+			 * 1. 	Check the obj field of the message for the actual error
+			 * 		message that will be displayed to the user.
+			 * 2. 	Remove any progress bars from the screen.
+			 * 3. 	Display a Toast with the error message.
 			 * */
 			case MESSAGE_ENCOUNTERED_ERROR:
 				// obj will contain a string representing the error message
@@ -389,10 +389,10 @@ public class PublicacoesGUI extends FragmentActivity
 				break;
 			/*
 			 * Tratando MESSAGE_TERMINOU_UPDATE
-			 * 1. Instancia o repositorio de boletins e atualiza a lista
-			 *	de boletins recém cadastrados.
-			 * 2. Pega a nova lista de boletins e manda para o método de 
-			 * 	atualização da tela.
+			 * 1. 	Instancia o repositorio de boletins e atualiza a lista
+			 *		de boletins recém cadastrados.
+			 * 2. 	Pega a nova lista de boletins e manda para o método de 
+			 * 		atualização da tela.
 			 * */
 			case MESSAGE_TERMINOU_UPDATE:
 				BoletimRepositorio br = new BoletimRepositorio(thisActivity);
@@ -400,6 +400,11 @@ public class PublicacoesGUI extends FragmentActivity
 				atualizaAdapter(bols);
 				break;
 				
+			/*
+			 * Tratando MESSAGE_TERMINOU_LIMPAR
+			 * 1.	Chama o método de atualizar a tela assim que termina de 
+			 * 		limpar os registros do banco.
+			 * */
 			case MESSAGE_TERMINOU_LIMPAR:
 				atualizaAdapter(new ArrayList<Boletim>());
 				break;
