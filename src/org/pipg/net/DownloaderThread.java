@@ -11,6 +11,7 @@ import java.net.URLConnection;
 
 import org.pipg.R;
 import org.pipg.gui.PublicacoesGUI;
+import org.pipg.utils.Util;
 
 import android.os.Environment;
 import android.os.Message;
@@ -70,14 +71,7 @@ public class DownloaderThread extends Thread{
 			fileSize = conn.getContentLength();
 			
 			// get the filename
-			lastSlash = url.toString().lastIndexOf('/');
-			fileName = "file.bin";
-			if (lastSlash >= 0) {
-				fileName = url.toString().substring(lastSlash + 1);
-			}
-			if (fileName.equals("")) {
-				fileName = "file.bin";
-			}
+			fileName = Util.nomeArquivoDaUrl(url.toString());
 			
 			// notify download start
 			int fileSizeInKB = fileSize / 1024;

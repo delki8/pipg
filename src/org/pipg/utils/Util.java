@@ -99,4 +99,20 @@ public class Util {
 		dataDomingo = new Date(cal.getTimeInMillis());
 		return dataDomingo; 
 	}
+	/** Retorna o nome de um arquivo a partir de um endereço. O método usa a
+	 * última '/' no endereço para capturar o nome do arquivo.
+	 * @param Endereço do arquivo (local ou na web).
+	 * @return Nome do arquivo que está no final do endereço.
+	 * */
+	public static String nomeArquivoDaUrl(String linkArquivoSite) {
+		int lastSlash = linkArquivoSite.toString().lastIndexOf('/');
+		String nomeArquivo = "boletim_nao_encontrado.pdf";
+		if (lastSlash >= 0) {
+			nomeArquivo = linkArquivoSite.toString().substring(lastSlash + 1);
+		}
+		if (nomeArquivo.equals("")) {
+			nomeArquivo = "boletim_nao_encontrado.pdf";
+		}
+		return nomeArquivo;
+	}
 }
