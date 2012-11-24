@@ -10,6 +10,7 @@ import org.pipg.utils.Util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -58,7 +59,6 @@ public class BoletimAdapter extends BaseAdapter {
 					Context.LAYOUT_INFLATER_SERVICE);
 			convertView = li.inflate(R.layout.boletim_linha, parent, false);
 			
-			
 			bHolder = new BoletimHolder();
 			bHolder.pastoral = (TextView) convertView.findViewById(R.id.pastoral);
 			bHolder.dataPublicacao = (TextView) convertView.findViewById(R.id.data_publicacao);
@@ -75,36 +75,32 @@ public class BoletimAdapter extends BaseAdapter {
 		bHolder.pastoral.setText(bHolder.boletim.getPastoral());
 		bHolder.dataPublicacao.setText(bHolder.boletim.getDataFormatada());
 		bHolder.link.setText(bHolder.boletim.getLink().toString());
-
-		convertView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				TextView urlInputField =  (TextView) v.findViewById(R.id.link);
-				String urlInput = urlInputField.getText().toString();
-				downloaderThread = new DownloaderThread(activityPai, urlInput);
-				downloaderThread.start();
-			}
-		});
 		
+		// Remover o efeito de clique no item.
+		convertView.setOnClickListener(null);
+
 		// Setando o clique para abrir arquivos.
 		ImageView openImg = (ImageView) convertView.findViewById(R.id.icone_lateral);
 		
 		String nomeArquivo = Util.nomeArquivoDaUrl(bHolder.boletim.getLink().toString());
-		final String caminho = Environment.getExternalStorageDirectory() + "/pipg/" + nomeArquivo;
+		final String caminhoLocal = Environment.getExternalStorageDirectory() + "/pipg/" + nomeArquivo;
+		TextView urlInputField =  (TextView) convertView.findViewById(R.id.link);
+		final String caminhoExterno = urlInputField.getText().toString();
 		
 		openImg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setAction(android.content.Intent.ACTION_VIEW);
-				File file = new File(caminho);
-				if (file.isFile()) {
-					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					activityPai.startActivity(intent);
-				} else {
-					Toast.makeText(activityPai, "Arquivo ainda não foi baixado.", 
+				File file = new File(caminhoLocal);
+				if (!file.isFile()) {
+					Toast.makeText(activityPai, "O arquivo será baixado.", 
 							Toast.LENGTH_SHORT).show();
+					downloaderThread = new DownloaderThread(activityPai, caminhoExterno);
+					downloaderThread.start();
 				}
+				intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+				activityPai.startActivity(intent);
 			}
 		});
 		

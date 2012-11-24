@@ -1,11 +1,37 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
-        <!-- <item name="android:actionBarStyle">@style/MyActionBar</item> -->
+    <!--
+     	<style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <!-- <item name="android:background">@color/verdeClaro</item> -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@color/verdeClaro</item>
+        <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>
     </style>
     
+	<style name="MyActionBarTabStyle" parent="android:style/Widget.Holo.Light.TabBar">
+	    <item name="android:background">@color/verde</item>
+	</style>
+    -->
+
+    <style name="MyTheme" parent="android:Theme.Holo.Light">
+        <item name="android:actionBarTabBarStyle">@style/customTabBar</item>
+        <item name="android:actionBarTabStyle">@style/customTabStyle</item>
+    </style>
+
+    <style name="customTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:showDividers">none</item>
+        <item name="android:measureWithLargestChild">true</item>
+        <item name="android:background">@drawable/boletim_icon_off</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="customTabBar" parent="@android:style/Widget.Holo.ActionBar.TabBar">
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@drawable/av_download</item>
+        <item name="android:dividerPadding">0dp</item>
+        <item name="android:background">@drawable/ic_launcher</item>
+    </style>
+
 </resources>

@@ -1,22 +1,20 @@
 <resources>
 
-    <string name="app_name">PIPG</string>
+    <string name="app_name">PIPG Publicações</string>
     <string name="title_videos">Vídeos</string>
     <string name="title_audios">Áudios</string>
     <string name="title_boletins">Boletins</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_teste_gui">PIPG</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="title_activity_principal">PIPG</string>
     
-	<string name="progress_dialog_title_downloading">Downloading...</string>
-	<string name="progress_dialog_title_connecting">Connecting...</string>
-	<string name="progress_dialog_message_prefix_downloading">Downloading file</string>
-	<string name="progress_dialog_message_prefix_connecting">Connecting to</string>
-	<string name="user_message_download_complete">Download complete!</string>
-	<string name="user_message_download_canceled">Download canceled!</string>
-	<string name="error_message_bad_url">Error: Invalid URL!</string>
-	<string name="error_message_file_not_found">Error: File not found!</string>
-	<string name="error_message_general">Error downloading file!</string>
-	<string name="mostra_se_o_boletim_j_foi_baixado_">Mostra se o boletim já foi baixado.</string>
+	<string name="progress_dialog_title_downloading">Baixando...</string>
+	<string name="progress_dialog_title_connecting">Conectando...</string>
+	<string name="progress_dialog_message_prefix_downloading">Baixando arquivo...</string>
+	<string name="progress_dialog_message_prefix_connecting">Conectando em</string>
+	<string name="user_message_download_complete">Download completo!</string>
+	<string name="user_message_download_canceled">Download cancelado!</string>
+	<string name="error_message_bad_url">Erro: URL inválida!</string>
+	<string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor!</string>
+	<string name="error_message_general">Erro ao baixar arquivo!</string>
 
 </resources>
