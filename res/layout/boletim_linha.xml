@@ -19,7 +19,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dataPublicacao"
+            android:id="@+id/data_publicacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -35,15 +35,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".8"
-        android:orientation="vertical"
-        android:background="@color/branco" >
+        android:background="@color/branco"
+        android:orientation="vertical" >
 
         <ImageView
+            android:id="@+id/icone_lateral"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:contentDescription="@string/mostra_se_o_boletim_j_foi_baixado_"
-            android:src="@drawable/av_download" />
+            android:src="@drawable/open" />
+
+        <!--
+             <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:contentDescription="@string/mostra_se_o_boletim_j_foi_baixado_"
+            android:src="@drawable/boletim_icon_on" />
+        -->
     </LinearLayout>
 
 </LinearLayout>

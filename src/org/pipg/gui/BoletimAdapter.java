@@ -1,5 +1,8 @@
 package org.pipg.gui;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import org.pipg.R;
@@ -7,11 +10,14 @@ import org.pipg.beans.Boletim;
 import org.pipg.net.DownloaderThread;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class BoletimAdapter extends BaseAdapter {
@@ -42,7 +48,7 @@ public class BoletimAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		BoletimHolder bHolder;
 		
@@ -54,7 +60,7 @@ public class BoletimAdapter extends BaseAdapter {
 			
 			bHolder = new BoletimHolder();
 			bHolder.pastoral = (TextView) convertView.findViewById(R.id.pastoral);
-			bHolder.dataPublicacao = (TextView) convertView.findViewById(R.id.dataPublicacao);
+			bHolder.dataPublicacao = (TextView) convertView.findViewById(R.id.data_publicacao);
 			bHolder.link = (TextView) convertView.findViewById(R.id.link);
 			
 			bHolder.boletim = lista.get(position);
@@ -79,6 +85,20 @@ public class BoletimAdapter extends BaseAdapter {
 			}
 		});
 		
+		// Setando o clique para abrir arquivos.
+		ImageView openImg = (ImageView) convertView.findViewById(R.id.icone_lateral);
+		final String caminho = caminhoLocalArquivo(bHolder.boletim.getLink().toString());
+		openImg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setAction(android.content.Intent.ACTION_VIEW);
+				File file = new File(caminho);
+				intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+				activityPai.startActivity(intent);
+			}
+		});
+		
 		return convertView;
 	}
 	
@@ -90,11 +110,13 @@ public class BoletimAdapter extends BaseAdapter {
     	Boletim boletim;
     }
 
-//	public List<Boletim> getLista() {
-//		return lista;
-//	}
-
 	public void setLista(List<Boletim> lista) {
 		this.lista = lista;
+	}
+	
+	
+	private String caminhoLocalArquivo(String linkArquivoSite) {
+		//http://new.pippaod.com/accounts/48/118/A4079F6B-B015-45DD-AEC8E70C0D314E3D.pdf
+		return linkArquivoSite;
 	}
 }

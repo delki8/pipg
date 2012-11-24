@@ -181,7 +181,6 @@ public class PublicacoesGUI extends FragmentActivity
     private void atualizaAdapter(Collection<Boletim> bols) {
 		boletins.clear();
 		boletins.addAll(bols);
-//		adapter.setLista(boletins);
 		ListView l = (ListView) findViewById(SectionFragment.ID_MAIN_LIST);
 		l.setAdapter(adapter);
     }
