@@ -76,31 +76,20 @@ public class BoletimAdapter extends BaseAdapter {
 		bHolder.dataPublicacao.setText(bHolder.boletim.getDataFormatada());
 		bHolder.link.setText(bHolder.boletim.getLink().toString());
 		
-		// Remover o efeito de clique no item.
+		// Remover o efeito de clique na parte não-clicável da linha.
 		convertView.setOnClickListener(null);
 
 		// Setando o clique para abrir arquivos.
 		ImageView openImg = (ImageView) convertView.findViewById(R.id.icone_lateral);
 		
-		String nomeArquivo = Util.nomeArquivoDaUrl(bHolder.boletim.getLink().toString());
-		final String caminhoLocal = Environment.getExternalStorageDirectory() + "/pipg/" + nomeArquivo;
 		TextView urlInputField =  (TextView) convertView.findViewById(R.id.link);
 		final String caminhoExterno = urlInputField.getText().toString();
 		
 		openImg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setAction(android.content.Intent.ACTION_VIEW);
-				File file = new File(caminhoLocal);
-				if (!file.isFile()) {
-					Toast.makeText(activityPai, "O arquivo será baixado.", 
-							Toast.LENGTH_SHORT).show();
-					downloaderThread = new DownloaderThread(activityPai, caminhoExterno);
-					downloaderThread.start();
-				}
-				intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-				activityPai.startActivity(intent);
+				downloaderThread = new DownloaderThread(activityPai, caminhoExterno);
+				downloaderThread.start();
 			}
 		});
 		

@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,15 +21,14 @@ import android.util.Log;
  * @author delki8
  * */
 public final class TrataConteudo {
-	private static final String CATEGORIA = "pipg"; 
-	
 	private static Date ultimaPublicacao;
 	
 	public static ArrayList<Boletim> pegarListaBoletim(String url){
 		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
 		Boletim boletim = null;
 		try {
-			Document doc = Jsoup.connect(url).get();
+			Connection con = Jsoup.connect(url);
+			Document doc = con.get();
 			Elements elements = doc.select(".grid_10 li");
 			for (Element li : elements) {
 				boletim = new Boletim();
@@ -57,7 +57,7 @@ public final class TrataConteudo {
 				}
 			}
 		} catch (IOException e) {
-			Log.e(CATEGORIA, "Erro de conexão: " + e.getMessage());
+			Log.e(Util.LOG, "Erro de conexão: " + e.getMessage());
 		}
 		return boletins;
 	}

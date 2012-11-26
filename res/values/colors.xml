@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="verde">#527f55</color>
     <color name="verdeClaro">#F0FFF0</color>
     <color name="preto">#000000</color>
     <color name="branco">#ffffff</color>
+    
+    <color name="android_green">#FFA4C639</color>
+    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="soft_grey">#FF777777</color>
+    <color name="background">#FFEFEFEF</color>
+
 </resources>

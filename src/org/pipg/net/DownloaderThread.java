@@ -20,24 +20,23 @@ public class DownloaderThread extends Thread{
 	
 	//constantes
 	private static final int DOWNLOAD_BUFFER_SIZE = 4096;
-	private static final File DIR_EXTERNO = new File(Environment
-			.getExternalStorageDirectory() + "/pipg/");
+	private static final File DIR_EXTERNO = new File(Util.ENDERECO_LOCAL);
 	
 	private PublicacoesGUI parentActivity;
 	private String downloadUrl;
 	
-	/*
+	/**
 	 * Instantiates a new DownloadThread object.
-	 * @param parentActivity Reference to AndroidFileDownloader activity.
-	 * @param inUrl String representing the URL of the file to be downloaded.
+	 * @param activityPai Reference to AndroidFileDownloader activity.
+	 * @param enderecoArquivoSite String representing the URL of the file to be downloaded.
 	 */
-	public DownloaderThread(PublicacoesGUI inParentActivity, 
-			String inUrl) {
+	public DownloaderThread(PublicacoesGUI activityPai, 
+			String enderecoArquivoSite) {
 		downloadUrl = "";
-		if (inUrl != null) {
-			downloadUrl = inUrl;
+		if (enderecoArquivoSite != null) {
+			downloadUrl = enderecoArquivoSite;
 		}
-		parentActivity = inParentActivity;
+		parentActivity = activityPai;
 	}
 	
 	/*
@@ -49,72 +48,83 @@ public class DownloaderThread extends Thread{
 	public void run() {
 		URL url;
 		URLConnection conn;
-		int fileSize;
-		int lastSlash;
-		String fileName;
+		int tamanhoArquivo;
+		String nomeArquivo;
 		BufferedInputStream inStream;
 		BufferedOutputStream outStream;
-		File outFile;
+		File arquivoSaida;
 		FileOutputStream fileStream;
 		Message msg;
-		
-		// we're going to connect now
-		msg = Message.obtain(parentActivity.activityHandler,
-				PublicacoesGUI.MESSAGE_CONNECTING_STARTED,
-				0, 0, downloadUrl);
-		parentActivity.activityHandler.sendMessage(msg);
 		
 		try {
 			url = new URL(downloadUrl);
 			conn = url.openConnection();
 			conn.setUseCaches(false);
-			fileSize = conn.getContentLength();
+			tamanhoArquivo = conn.getContentLength();
 			
-			// get the filename
-			fileName = Util.nomeArquivoDaUrl(url.toString());
+			// Pegando o nome do arquivo a partir da url
+			nomeArquivo = Util.nomeArquivoDaUrl(url.toString());
 			
-			// notify download start
-			int fileSizeInKB = fileSize / 1024;
-			msg = Message.obtain(parentActivity.activityHandler,
-					PublicacoesGUI.MESSAGE_DOWNLOAD_STARTED,
-					fileSizeInKB, 0, fileName);
-			parentActivity.activityHandler.sendMessage(msg);
-			
-			// start download
-			inStream = new BufferedInputStream(conn.getInputStream());
-			DIR_EXTERNO.mkdirs();
-			outFile = new File(DIR_EXTERNO, fileName);
-			fileStream = new FileOutputStream(outFile);
-			outStream = new BufferedOutputStream(fileStream, 
-					DOWNLOAD_BUFFER_SIZE);
-			byte[] data = new byte[DOWNLOAD_BUFFER_SIZE];
-			int bytesRead = 0; 
-			int totalRead = 0;
-			while (!isInterrupted() && (bytesRead = inStream.read(data, 0, 
-					data.length)) >= 0) {
-				outStream.write(data, 0, bytesRead);
-				
-				// update progress bar
-				totalRead += bytesRead;
-				int totalReadInKB = totalRead / 1024;
+			// Verificar se o arquivo já existe
+			File arquivoLocal = new File(Util.ENDERECO_LOCAL + nomeArquivo);
+			if (!arquivoLocal.isFile()) {
+				// Iniciando a conexão aqui
 				msg = Message.obtain(parentActivity.activityHandler,
-						PublicacoesGUI.MESSAGE_UPDATE_PROGRESS_BAR,
-						totalReadInKB, 0);
+						PublicacoesGUI.MESSAGE_CONNECTING_STARTED,
+						0, 0, downloadUrl);
 				parentActivity.activityHandler.sendMessage(msg);
-			}
-			
-			outStream.close();
-			fileStream.close();
-			inStream.close();
-			
-			if (isInterrupted()) {
-				// the download was canceled, so let's delete 
-				// the partially downloaded file
-				outFile.delete();
-			} else {
-				// notify completion
+				
+				// Notificar à activity que o download iniciou.
+				int tamanhoArquivoEmKB = tamanhoArquivo / 1024;
 				msg = Message.obtain(parentActivity.activityHandler,
-						PublicacoesGUI.MESSAGE_DOWNLOAD_COMPLETE);
+						PublicacoesGUI.MESSAGE_DOWNLOAD_STARTED,
+						tamanhoArquivoEmKB, 0, nomeArquivo);
+				parentActivity.activityHandler.sendMessage(msg);
+				
+				// Iniciar o download
+				inStream = new BufferedInputStream(conn.getInputStream());
+				DIR_EXTERNO.mkdirs();
+				arquivoSaida = new File(DIR_EXTERNO, nomeArquivo);
+				fileStream = new FileOutputStream(arquivoSaida);
+				outStream = new BufferedOutputStream(fileStream, 
+						DOWNLOAD_BUFFER_SIZE);
+				byte[] data = new byte[DOWNLOAD_BUFFER_SIZE];
+				int bytesLidos = 0; 
+				int totalRead = 0;
+				while (!isInterrupted() && (bytesLidos = inStream.read(data, 0, 
+						data.length)) >= 0) {
+					outStream.write(data, 0, bytesLidos);
+					
+					// Atualizar a barra de progresso
+					totalRead += bytesLidos;
+					int totalReadInKB = totalRead / 1024;
+					msg = Message.obtain(parentActivity.activityHandler,
+							PublicacoesGUI.MESSAGE_UPDATE_PROGRESS_BAR,
+							totalReadInKB, 0);
+					parentActivity.activityHandler.sendMessage(msg);
+				}
+				
+				outStream.close();
+				fileStream.close();
+				inStream.close();
+				
+				if (isInterrupted()) {
+					// Se o download foi cancelado, vamos apagar o arquivo 
+					// que foi baixado pelas metades.
+					arquivoSaida.delete();
+				} else {
+					// Notificar que terminou o download
+					msg = Message.obtain(parentActivity.activityHandler,
+							PublicacoesGUI.MESSAGE_DOWNLOAD_COMPLETE,
+							0, 0, arquivoLocal);
+					parentActivity.activityHandler.sendMessage(msg);
+				}
+				
+			} else {
+				// Notificar à activity que o arquivo existe.
+				msg = Message.obtain(parentActivity.activityHandler,
+						PublicacoesGUI.MESSAGE_ARQUIVO_EXISTE,
+						0, 0, arquivoLocal);
 				parentActivity.activityHandler.sendMessage(msg);
 			}
 		} catch (MalformedURLException e) {

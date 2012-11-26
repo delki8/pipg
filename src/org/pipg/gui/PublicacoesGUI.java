@@ -1,5 +1,6 @@
 package org.pipg.gui;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import org.pipg.net.DownloaderThread;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,9 +47,8 @@ public class PublicacoesGUI extends FragmentActivity
 	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
 	public static final int MESSAGE_TERMINOU_UPDATE = 1006;
 	public static final int MESSAGE_TERMINOU_LIMPAR = 1007;
+	public static final int MESSAGE_ARQUIVO_EXISTE = 1008;
 	
-	private static final String LOG = "pipg";
-
 	private static PublicacoesGUI thisActivity;
 	private ProgressDialog progressDialog;
 
@@ -112,8 +114,13 @@ public class PublicacoesGUI extends FragmentActivity
         	
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
-        		BoletimControl bControl = new BoletimControl();
-	        	bControl.atualizaBoletins(true, thisActivity);
+				new Thread(){
+					@Override
+					public void run() {
+						BoletimControl bControl = new BoletimControl();
+						bControl.atualizaBoletins(true, thisActivity);
+					}
+				}.start();
 	        	return true;
         	}
         });
@@ -260,6 +267,7 @@ public class PublicacoesGUI extends FragmentActivity
 	 * */
 	public Handler activityHandler = new Handler() {
 		public void handleMessage(Message msg) {
+			File file = null;
 			switch (msg.what) {
 			/*
 			 * Handling MESSAGE_UPDATE_PROGRESS_BAR:
@@ -321,7 +329,7 @@ public class PublicacoesGUI extends FragmentActivity
 			 * 4. 	Make the progress bar visible.
 			 * */
 			case MESSAGE_DOWNLOAD_STARTED:
-				// obj will contain a String representing the file name
+				// obj contém uma string que representa o nome do arquivo
 				if (msg.obj != null && msg.obj instanceof String) {
 					int maxValue = msg.arg1;
 					String fileName = (String) msg.obj;
@@ -356,6 +364,8 @@ public class PublicacoesGUI extends FragmentActivity
 				dismissCurrentProgressDialog();
 				displayMessage(getString(
 						R.string.user_message_download_complete));
+				file =  (File) msg.obj;
+				abreArquivo(file);
 				break;
 			/*
 			 * Handling MESSAGE_DOWNLOAD_CANCELED:
@@ -407,12 +417,30 @@ public class PublicacoesGUI extends FragmentActivity
 			case MESSAGE_TERMINOU_LIMPAR:
 				atualizaAdapter(new ArrayList<Boletim>());
 				break;
+				
+			/*
+			 * Tratando MESSAGE_ARQUIVO_EXISTE
+			 * 1.	Dispara intent para abrir o arquivo existente sem fazer 
+			 * 		download.
+			 * */
+			case MESSAGE_ARQUIVO_EXISTE:
+				file =  (File) msg.obj;
+				abreArquivo(file);
+				break;
+				
 			default:
 				// nothing to do here
 				break;
 			}
 		}
 	};
+	
+	private void abreArquivo(File file) {
+		Intent intent = new Intent();
+		intent.setAction(android.content.Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+		thisActivity.startActivity(intent);
+	}
 	
 	/**
 	 * If there is a progress dialog, dismiss it and set progressDialog 

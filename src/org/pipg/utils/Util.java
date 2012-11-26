@@ -6,11 +6,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.os.Environment;
 import android.util.Log;
 
 public class Util {
 	
-	private static String CATEGORIA = "pipg";
+	public static final String ENDERECO_LOCAL = Environment.getExternalStorageDirectory() + "/pipg/";
+	public static final String LOG = "pipg";
+	public static final String URL_ATUALIZACAO_PARCIAL = 
+			"http://pipg.org/index.cfm?p=bulletins";
+	
 	
 	/** Recebe uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy" e retorna 
 	 * uma java.util.Date.
@@ -25,7 +30,7 @@ public class Util {
 	    	Date data = sdf.parse(dataString);
 	    	return data;
 		} catch (ParseException e) {
-			Log.e(CATEGORIA, "Erro ao converter. " + e.getMessage());
+			Log.e(LOG, "Erro ao converter. " + e.getMessage());
 		}  
 	    return null;
 	}
@@ -71,7 +76,7 @@ public class Util {
 			Date dataRetorno = sdf.parse(dataString);
 			return dataRetorno;
 		} catch (ParseException e) {
-			Log.e(CATEGORIA, "A data: " + dataString + " não está no formato: " 
+			Log.e(LOG, "A data: " + dataString + " não está no formato: " 
 					+ formato);
 		}
 		return null;

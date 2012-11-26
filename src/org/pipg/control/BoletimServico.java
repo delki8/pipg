@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.pipg.beans.Boletim;
 import org.pipg.net.BoletimRepositorio;
 import org.pipg.net.TrataConteudo;
+import org.pipg.utils.Util;
 
 import android.app.Service;
 import android.content.Context;
@@ -13,8 +14,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class BoletimServico extends Service implements PublicacaoInterface<Boletim>{
-	private static final String URL_ATUALIZACAO_PARCIAL = 
-			"http://pipg.org/index.cfm?p=bulletins";
 	
 	ArrayList<Boletim> boletins = new ArrayList<Boletim>();
 	
@@ -43,7 +42,7 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 						Integer nPagina = 1;
 						while (euDevoContinuarBuscando) {
 							ArrayList<Boletim> boletinsTemp = TrataConteudo
-									.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL + "&d=" + nPagina);
+									.pegarListaBoletim(Util.URL_ATUALIZACAO_PARCIAL + "&d=" + nPagina);
 							if (boletinsTemp != null && boletinsTemp.size() > 0){
 								boletins.addAll(boletinsTemp);  
 							}else{
@@ -59,7 +58,7 @@ public class BoletimServico extends Service implements PublicacaoInterface<Bolet
 				new Thread("baixaBoletinsParcial"){
 					@Override
 					public void run(){
-						boletins = TrataConteudo.pegarListaBoletim(URL_ATUALIZACAO_PARCIAL);
+						boletins = TrataConteudo.pegarListaBoletim(Util.URL_ATUALIZACAO_PARCIAL);
 						for (Boletim boletim : boletins) {
 							Log.i("boletim", boletim.getPastoral() + " " + boletim.getDataPublicacao() + " " + boletim.getData());
 						}
