@@ -80,7 +80,7 @@ public class BoletimAdapter extends BaseAdapter {
 		convertView.setOnClickListener(null);
 
 		// Setando o clique para abrir arquivos.
-		ImageView openImg = (ImageView) convertView.findViewById(R.id.icone_lateral);
+		ImageView openImg = (ImageView) convertView.findViewById(R.id.openImg);
 		
 		TextView urlInputField =  (TextView) convertView.findViewById(R.id.link);
 		final String caminhoExterno = urlInputField.getText().toString();
