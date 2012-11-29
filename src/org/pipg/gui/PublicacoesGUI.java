@@ -137,29 +137,29 @@ public class PublicacoesGUI extends FragmentActivity
         	}
         });
         
-        MenuItem inserir = menu.findItem(R.id.menu_inserir);
-        inserir.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-        	
-        	@Override
-        	public boolean onMenuItemClick(MenuItem item) {
-        		BoletimRepositorio bRepositorio = new BoletimRepositorio(thisActivity);
-        		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
-        		try {
-	        		for (int i = 0; i < 25; i++) {
-	        			Boletim b = new Boletim();
-	        			b.setPastoral("Pastoral Teste " + i);
-						b.setLink(new URL("http://www.google.com"));
-	        			b.setDataPublicacao(new Date());
-	        			boletins.add(b);
-					}
-        		} catch (MalformedURLException e) {
-        			e.printStackTrace();
-        		}
-        		bRepositorio.inserir(boletins);
-        		bRepositorio.fechar();
-        		return true;
-        	}
-        });
+//        MenuItem inserir = menu.findItem(R.id.menu_inserir);
+//        inserir.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//        	
+//        	@Override
+//        	public boolean onMenuItemClick(MenuItem item) {
+//        		BoletimRepositorio bRepositorio = new BoletimRepositorio(thisActivity);
+//        		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
+//        		try {
+//	        		for (int i = 0; i < 25; i++) {
+//	        			Boletim b = new Boletim();
+//	        			b.setPastoral("Pastoral Teste " + i);
+//						b.setLink(new URL("http://www.google.com"));
+//	        			b.setDataPublicacao(new Date());
+//	        			boletins.add(b);
+//					}
+//        		} catch (MalformedURLException e) {
+//        			e.printStackTrace();
+//        		}
+//        		bRepositorio.inserir(boletins);
+//        		bRepositorio.fechar();
+//        		return true;
+//        	}
+//        });
         
         return true;
     }
@@ -210,7 +210,8 @@ public class PublicacoesGUI extends FragmentActivity
 
         @Override
         public int getCount() {
-            return 3;
+//            return 3;
+        	return 1;
         }
 
         @Override

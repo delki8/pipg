@@ -23,12 +23,12 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="Limpar"/>
-    <item
+<!--     <item
         android:id="@+id/menu_inserir"
         android:icon="@drawable/collectionsviewaslist"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="Inserir Testes"/>
+        android:title="Inserir Testes"/> -->
     <item
         android:id="@+id/menu_sobre"
         android:orderInCategory="100"
