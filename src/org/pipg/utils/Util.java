@@ -1,5 +1,6 @@
 package org.pipg.utils;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -119,5 +120,25 @@ public class Util {
 			nomeArquivo = "boletim_nao_encontrado.pdf";
 		}
 		return nomeArquivo;
+	}
+	
+	/**
+	 * Apaga o diretorio com todos arquivos e subdiretorios.
+	 * @param diretorio raiz que será apagado.
+	 * */
+	public static void apagaDiretorio(File dir) {
+		if (dir.isDirectory()) {
+			File[] arquivos = dir.listFiles();
+			if (arquivos.length > 0) {
+				for (File arquivo : arquivos) {
+					if (arquivo.isDirectory()) {
+						apagaDiretorio(arquivo);
+					} else {
+						arquivo.delete();
+					}
+				}
+			}
+			dir.delete();
+		}
 	}
 }

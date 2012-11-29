@@ -70,7 +70,8 @@ public class PublicacoesGUI extends FragmentActivity
         		getSupportFragmentManager());
 
         final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -130,13 +131,8 @@ public class PublicacoesGUI extends FragmentActivity
         	
         	@Override
         	public boolean onMenuItemClick(MenuItem item) {
-        		BoletimRepositorio bRepositorio = new BoletimRepositorio(
-        				thisActivity);
-        		int linhasApagadas = bRepositorio.limparBanco();
-        		Toast.makeText(thisActivity, linhasApagadas + 
-        				" registros apagados", Toast.LENGTH_SHORT).show();
-        		bRepositorio.fechar();
-        		atualizaAdapter(new ArrayList<Boletim>());
+        		BoletimControl bControl = new BoletimControl();
+        		bControl.limparBoletins(thisActivity);
         		return true;
         	}
         });
@@ -415,6 +411,8 @@ public class PublicacoesGUI extends FragmentActivity
 			 * 		limpar os registros do banco.
 			 * */
 			case MESSAGE_TERMINOU_LIMPAR:
+				Toast.makeText(thisActivity, msg.arg1 + 
+        				" registros apagados", Toast.LENGTH_SHORT).show();
 				atualizaAdapter(new ArrayList<Boletim>());
 				break;
 				

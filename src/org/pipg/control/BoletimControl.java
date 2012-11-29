@@ -1,5 +1,6 @@
 package org.pipg.control;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.pipg.beans.Boletim;
@@ -51,11 +52,15 @@ public class BoletimControl {
 		parentActivity.activityHandler.sendMessage(msg);
 	}
 	
-	public void limparBanco(PublicacoesGUI parentActivity) {
+	public void limparBoletins(PublicacoesGUI parentActivity) {
 		bRep = new BoletimRepositorio(parentActivity);
-		bRep.limparBanco();
+		int registrosApagados = bRep.limparBanco();
 		Message msg = Message.obtain(parentActivity.activityHandler, 
-				PublicacoesGUI.MESSAGE_TERMINOU_LIMPAR);
+				PublicacoesGUI.MESSAGE_TERMINOU_LIMPAR, registrosApagados, 0);
+		File dirPadrao = new File(Util.ENDERECO_LOCAL);
+		if (dirPadrao.isDirectory()) {
+			Util.apagaDiretorio(dirPadrao);
+		}
 		parentActivity.activityHandler.sendMessage(msg);
 	}
 }
