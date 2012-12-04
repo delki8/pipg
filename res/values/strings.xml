@@ -10,11 +10,11 @@
 	<string name="progress_dialog_title_downloading">Baixando...</string>
 	<string name="progress_dialog_title_connecting">Conectando...</string>
 	<string name="progress_dialog_message_prefix_downloading">Baixando arquivo...</string>
-	<string name="progress_dialog_message_prefix_connecting">Conectando em</string>
-	<string name="user_message_download_complete">Download completo!</string>
-	<string name="user_message_download_canceled">Download cancelado!</string>
-	<string name="error_message_bad_url">Erro: URL inválida!</string>
-	<string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor!</string>
-	<string name="error_message_general">Erro ao baixar arquivo!</string>
+	<string name="progress_dialog_message_prefix_connecting">Conectando em: </string>
+	<string name="user_message_download_complete">Download completo</string>
+	<string name="user_message_download_canceled">Download cancelado</string>
+	<string name="error_message_bad_url">Erro: URL inválida</string>
+	<string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor</string>
+	<string name="error_message_general">Erro de conexão</string>
 
 </resources>

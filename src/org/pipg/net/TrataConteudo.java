@@ -23,7 +23,7 @@ import android.util.Log;
 public final class TrataConteudo {
 	private static Date ultimaPublicacao;
 	
-	public static ArrayList<Boletim> pegarListaBoletim(String url){
+	public static ArrayList<Boletim> pegarListaBoletim(String url) {
 		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
 		Boletim boletim = null;
 		try {

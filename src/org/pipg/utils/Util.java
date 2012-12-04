@@ -1,6 +1,10 @@
 package org.pipg.utils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,35 +15,41 @@ import android.os.Environment;
 import android.util.Log;
 
 public class Util {
-	
-	public static final String ENDERECO_LOCAL = Environment.getExternalStorageDirectory() + "/pipg/";
+
+	public static final String ENDERECO_LOCAL = Environment
+			.getExternalStorageDirectory() + "/pipg/";
 	public static final String LOG = "pipg";
-	public static final String URL_ATUALIZACAO_PARCIAL = 
-			"http://pipg.org/index.cfm?p=bulletins";
-	
-	
-	/** Recebe uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy" e retorna 
-	 * uma java.util.Date.
-	 * @param dataString é uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy"
+	public static final String URL_ATUALIZACAO_PARCIAL = "http://pipg.org/index.cfm?p=bulletins";
+
+	/**
+	 * Recebe uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy" e retorna uma
+	 * java.util.Date.
+	 * 
+	 * @param dataString
+	 *            é uma string no formato "EEE MMM dd HH:mm:ss zzz yyyy"
 	 * @return data convertida.
 	 * */
 	public static Date dataStringDate(String dataString) {
-	    try {
-	    	dataString = dataString.replace("BRT ", "");
-	    	SimpleDateFormat sdf = 
-	    			new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy", Locale.US);
-	    	Date data = sdf.parse(dataString);
-	    	return data;
+		try {
+			dataString = dataString.replace("BRT ", "");
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"EEE MMM dd HH:mm:ss yyyy", Locale.US);
+			Date data = sdf.parse(dataString);
+			return data;
 		} catch (ParseException e) {
 			Log.e(LOG, "Erro ao converter. " + e.getMessage());
-		}  
-	    return null;
+		}
+		return null;
 	}
-	
-	/** Pega qualquer java.util.Date e formata para o formato desejado.
-	 * @param data com a data a ser formatada.
-	 * @param formato com o formato desejado Ex: "dd/MM/yyyy"
-	 * @return dataFormatada de acordo com o formato informado. 
+
+	/**
+	 * Pega qualquer java.util.Date e formata para o formato desejado.
+	 * 
+	 * @param data
+	 *            com a data a ser formatada.
+	 * @param formato
+	 *            com o formato desejado Ex: "dd/MM/yyyy"
+	 * @return dataFormatada de acordo com o formato informado.
 	 * */
 	public static String dataDateString(Date data, String formato) {
 		if (data != null) {
@@ -50,10 +60,13 @@ public class Util {
 		}
 		return null;
 	}
-	
-	/** Recebe uma String de data no formato "EEE MMM dd HH:mm:ss zzz yyyy"
-	 * e formata ela para "dd/MM/yyyy"
-	 * @param dataString no formato "EEE MMM dd HH:mm:ss zzz yyyy"
+
+	/**
+	 * Recebe uma String de data no formato "EEE MMM dd HH:mm:ss zzz yyyy" e
+	 * formata ela para "dd/MM/yyyy"
+	 * 
+	 * @param dataString
+	 *            no formato "EEE MMM dd HH:mm:ss zzz yyyy"
 	 * @return dataFormatada no formato "dd/MM/yyyy"
 	 * */
 	public static String dataStringString(String dataString) {
@@ -64,12 +77,16 @@ public class Util {
 		}
 		return null;
 	}
-	
-	/** Pega uma String no formato informado e transforma num java.util.Date
-	 * @param data no formato informado.
-	 * @param formato em que a data está chegando.
+
+	/**
+	 * Pega uma String no formato informado e transforma num java.util.Date
+	 * 
+	 * @param data
+	 *            no formato informado.
+	 * @param formato
+	 *            em que a data está chegando.
 	 * @return Data referente ao formato personalizado ou null caso não seja
-	 * possível formatar.
+	 *         possível formatar.
 	 * */
 	public static Date formatDateCustom(String dataString, String formato) {
 		try {
@@ -77,37 +94,44 @@ public class Util {
 			Date dataRetorno = sdf.parse(dataString);
 			return dataRetorno;
 		} catch (ParseException e) {
-			Log.e(LOG, "A data: " + dataString + " não está no formato: " 
+			Log.e(LOG, "A data: " + dataString + " não está no formato: "
 					+ formato);
 		}
 		return null;
 	}
-	
-	/** Encontra o domingo mais próximo de uma determinada data.
-	 * @param dataDePublicacao é a data usada como parâmetro, a data retornada
-	 * é o domingo mais próximo à data informada aqui.
-	 * @return java.util.Date correspondente ao domingo mais próximo da data 
-	 * informada no parâmetro.
+
+	/**
+	 * Encontra o domingo mais próximo de uma determinada data.
+	 * 
+	 * @param dataDePublicacao
+	 *            é a data usada como parâmetro, a data retornada é o domingo
+	 *            mais próximo à data informada aqui.
+	 * @return java.util.Date correspondente ao domingo mais próximo da data
+	 *         informada no parâmetro.
 	 * */
 	public static Date domingoMaisProximo(Date dataDePublicacao) {
 		Date dataDomingo = null;
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dataDePublicacao);
 		int incremento = 1;
-		if (cal.get(Calendar.DAY_OF_WEEK) < Calendar.THURSDAY){
+		if (cal.get(Calendar.DAY_OF_WEEK) < Calendar.THURSDAY) {
 			incremento = -1;
 		}
-		
-		while(cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
+
+		while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
 			cal.add(Calendar.DATE, incremento);
 		}
-		
+
 		dataDomingo = new Date(cal.getTimeInMillis());
-		return dataDomingo; 
+		return dataDomingo;
 	}
-	/** Retorna o nome de um arquivo a partir de um endereço. O método usa a
+
+	/**
+	 * Retorna o nome de um arquivo a partir de um endereço. O método usa a
 	 * última '/' no endereço para capturar o nome do arquivo.
-	 * @param Endereço do arquivo (local ou na web).
+	 * 
+	 * @param Endereço
+	 *            do arquivo (local ou na web).
 	 * @return Nome do arquivo que está no final do endereço.
 	 * */
 	public static String nomeArquivoDaUrl(String linkArquivoSite) {
@@ -121,10 +145,12 @@ public class Util {
 		}
 		return nomeArquivo;
 	}
-	
+
 	/**
 	 * Apaga o diretorio com todos arquivos e subdiretorios.
-	 * @param diretorio raiz que será apagado.
+	 * 
+	 * @param diretorio
+	 *            raiz que será apagado.
 	 * */
 	public static void apagaDiretorio(File dir) {
 		if (dir.isDirectory()) {
@@ -140,5 +166,21 @@ public class Util {
 			}
 			dir.delete();
 		}
+	}
+
+	/**
+	 * Informa o tamanho do arquivo referenciado na url. É preciso ser chamado
+	 * de dentro de um Thread.start().
+	 * 
+	 * @author delki8
+	 * @data 03/12/2012
+	 * @param urlDownload
+	 *            é a url de download do arquivo que será calculado.
+	 * */
+	public static int tamanhoArquivo(String urlDownload) throws IOException {
+		URL url = new URL(urlDownload);
+		URLConnection conn = url.openConnection();
+		int tamanhoArquivo = conn.getContentLength();
+		return tamanhoArquivo;
 	}
 }
