@@ -382,14 +382,14 @@ public class PublicacoesGUI extends FragmentActivity implements
 			case MESSAGE_CONFIRM_DOWNLOAD:
 				final String link = (String) msg.obj;
 
-				String m = "O arquivo possui " + msg.arg1 + "Kb. ";
-				m += "Tem certeza que deseja baixa-lo?";
+				String m = "O arquivo possui " + msg.arg1
+						+ "Kb. Tem certeza que deseja baixa-lo?";
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						thisActivity);
-				builder.setTitle("Vamos baixar?");
+				builder.setTitle(R.string.baixar);
 				builder.setMessage(m);
 				builder.setCancelable(true);
-				builder.setPositiveButton("Sim",
+				builder.setPositiveButton(R.string.sim,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								BoletimControl bControl = new BoletimControl();
@@ -397,7 +397,7 @@ public class PublicacoesGUI extends FragmentActivity implements
 							}
 						});
 
-				builder.setNegativeButton("Não", null);
+				builder.setNegativeButton(R.string.n_o, null);
 				AlertDialog alert = builder.create();
 				alert.show();
 				break;
