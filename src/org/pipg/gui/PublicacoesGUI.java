@@ -184,6 +184,10 @@ public class PublicacoesGUI extends FragmentActivity implements
 			BoletimControl bControl = new BoletimControl();
 			bControl.limparBoletins(thisActivity);
 			break;
+		case R.id.menu_sobre:
+			Intent it = new Intent(thisActivity, Sobre.class);
+			startActivity(it);
+			break;
 		default:
 			break;
 		}

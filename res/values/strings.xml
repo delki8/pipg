@@ -6,18 +6,36 @@
     <string name="title_boletins">Boletins</string>
     <string name="menu_settings">Configurações</string>
     <string name="title_activity_principal">PIPG</string>
-    
-	<string name="progress_dialog_title_downloading">Baixando...</string>
-	<string name="progress_dialog_title_connecting">Conectando...</string>
-	<string name="progress_dialog_message_prefix_downloading">Baixando arquivo...</string>
-	<string name="progress_dialog_message_prefix_connecting">Conectando em: </string>
-	<string name="user_message_download_complete">Download completo</string>
-	<string name="user_message_download_canceled">Download cancelado</string>
-	<string name="error_message_bad_url">Erro: URL inválida</string>
-	<string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor</string>
-	<string name="error_message_general">Erro de conexão</string>
-	<string name="baixar">Baixar?</string>
-	<string name="sim">Sim</string>
-	<string name="n_o">Não</string>
+    <!-- Controle de Download -->
+    <string name="progress_dialog_title_downloading">Baixando...</string>
+    <string name="progress_dialog_title_connecting">Conectando...</string>
+    <string name="progress_dialog_message_prefix_downloading">Baixando arquivo...</string>
+    <string name="progress_dialog_message_prefix_connecting">Conectando em: </string>
+    <string name="user_message_download_complete">Download completo</string>
+    <string name="user_message_download_canceled">Download cancelado</string>
+    <string name="error_message_bad_url">Erro: URL inválida</string>
+    <string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor</string>
+    <string name="error_message_general">Erro de conexão</string>
+    <string name="baixar">Baixar?</string>
+    <string name="sim">Sim</string>
+    <string name="n_o">Não</string>
+
+    <!-- Informações para o "Sobre" -->
+    <string name="versao">Versão Alpha</string>
+    <string name="dev_1">Ruither delki8 Borba</string>
+    <string name="dev_2">Eric Kriger</string>
+    <string name="email_1">delki8\@gmail.com</string>
+    <string name="email_2">erickriger\@gmail.com</string>
+    <string name="sobre_app">
+        O \"PIPG Publicações\" foi desenvolvido como o propósito de 
+        dinamizar o acesso às publicações do site da Primeira Igreja 
+        Presbiteriana de Goiânia.	</string>
+    <string name="codigo_fonte">code.google.com/p/pipg</string>
+    <string name="rodape">
+        \"Porque eu estou bem certo de que nem a morte, nem a vida, 
+        nem os anjos, nem os principados, nem as coisas do presente, 
+        nem do porvir, nem os poderes, nem a altura, nem a profundidade, 
+        nem qualquer outra criatura poderá separar-nos do amor de Deus, 
+        que está em Cristo Jesus, nosso Senhor.\" Romanos 8:38-39 	</string>	
 
 </resources>

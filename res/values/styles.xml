@@ -3,4 +3,9 @@
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
     </style>
 	
+    <style name="textoSobre" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_marginLeft">15dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
