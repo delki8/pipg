@@ -21,21 +21,23 @@
     <string name="n_o">Não</string>
 
     <!-- Informações para o "Sobre" -->
-    <string name="versao">Versão Alpha</string>
-    <string name="dev_1">Ruither delki8 Borba</string>
-    <string name="dev_2">Eric Kriger</string>
-    <string name="email_1">delki8\@gmail.com</string>
-    <string name="email_2">erickriger\@gmail.com</string>
+    <string name="versao">1.0.0</string>
+    <string name="dev_1">Ruither Borba: delki8\@gmail.com</string>
+    <string name="dev_2">Eric Kriger: erickriger\@gmail.com</string>
     <string name="sobre_app">
         O \"PIPG Publicações\" foi desenvolvido como o propósito de 
         dinamizar o acesso às publicações do site da Primeira Igreja 
         Presbiteriana de Goiânia.	</string>
     <string name="codigo_fonte">code.google.com/p/pipg</string>
     <string name="rodape">
+       <i> 
         \"Porque eu estou bem certo de que nem a morte, nem a vida, 
         nem os anjos, nem os principados, nem as coisas do presente, 
         nem do porvir, nem os poderes, nem a altura, nem a profundidade, 
         nem qualquer outra criatura poderá separar-nos do amor de Deus, 
-        que está em Cristo Jesus, nosso Senhor.\" Romanos 8:38-39 	</string>	
+        que está em Cristo Jesus, nosso Senhor.\" Romanos 8:38-39 
+        </i>	</string>
+       <string name="desenvolvido_por">Desenvolvido por:</string>
+       <string name="descricao_label">Descrição:</string>	
 
 </resources>

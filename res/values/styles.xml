@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
-    </style>
-	
+
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light"></style>
+
     <style name="textoSobre" parent="android:Widget.Holo.Light.TextView">
         <item name="android:layout_marginLeft">15dip</item>
         <item name="android:layout_marginRight">15dip</item>
-        <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="versao" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_marginLeft">15dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:textSize">13pt</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowRadius">0</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:textColor">@color/verde</item>
+    </style>
+    <style name="label" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_marginLeft">15dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:textSize">8pt</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:textColor">@color/verde</item>
+    </style>
+
 </resources>
