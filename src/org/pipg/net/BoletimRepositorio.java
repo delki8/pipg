@@ -3,6 +3,7 @@ package org.pipg.net;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import org.pipg.beans.Boletim;
@@ -14,7 +15,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 public class BoletimRepositorio {
@@ -198,6 +198,8 @@ public class BoletimRepositorio {
 			} while (c.moveToNext());
 		}
 		c.close();
+		
+		Collections.sort(boletins);
 		return boletins;
 	}
 	

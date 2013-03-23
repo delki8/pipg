@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 
-public class Boletim extends Publicacao{
+public class Boletim extends Publicacao implements Comparable<Boletim> {
 	public static String[] colunas = new String[] {
 		Boletins._ID, Boletins.PASTORAL, Boletins.DATA, Boletins.DATAPUB,
 		Boletins.LINK, Boletins.NUMERO
@@ -106,5 +106,17 @@ public class Boletim extends Publicacao{
 					id);
 			return uriBoletim;
 		}
+	}
+
+	/**
+	 * Returns: a negative integer, zero, or a positive integer as this object
+	 * is less than, equal to, or greater than the specified object.
+	 * */
+	@Override
+	public int compareTo(Boletim another) {
+		int comparador = this.getDataPublicacao().compareTo(
+				another.getDataPublicacao()); 
+		comparador *= -1;
+		return comparador;
 	}
 }
