@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pipg"
     android:versionCode="10001"
-    android:versionName="1.0.1" >
+    android:versionName="@string/versao" >
 
     <uses-sdk
         android:minSdkVersion="11"
