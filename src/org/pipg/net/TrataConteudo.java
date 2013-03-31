@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -44,7 +45,7 @@ public final class TrataConteudo {
 				if (p.text() != null && !p.text().trim().equals("")){
 					String data = p.text().trim();
 					boletim.setDataPublicacao(Util.formatDateCustom(data, 
-							"dd MMM, yyyy"));
+							"dd MMM, yyyy", new Locale("pt", "BR")));
 					boletim.setData(domingoMaisProximo(boletim
 							.getDataPublicacao()));
 //					boletim.setNumero(encontraNumeroBoletim(boletim.getData()));

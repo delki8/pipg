@@ -30,9 +30,9 @@ public class Util {
 	 * */
 	public static Date dataStringDate(String dataString) {
 		try {
-			dataString = dataString.replace("BRT ", "");
+			dataString = dataString.replace("BRT", "GMT+00:00");
 			SimpleDateFormat sdf = new SimpleDateFormat(
-					"EEE MMM dd HH:mm:ss yyyy", Locale.US);
+					"EEE MMM dd HH:mm:ss z yyyy", Locale.US);
 			Date data = sdf.parse(dataString);
 			return data;
 		} catch (ParseException e) {
@@ -87,9 +87,9 @@ public class Util {
 	 * @return Data referente ao formato personalizado ou null caso não seja
 	 *         possível formatar.
 	 * */
-	public static Date formatDateCustom(String dataString, String formato) {
+	public static Date formatDateCustom(String dataString, String formato, Locale local) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat(formato);
+			SimpleDateFormat sdf = new SimpleDateFormat(formato, local);
 			Date dataRetorno = sdf.parse(dataString);
 			return dataRetorno;
 		} catch (ParseException e) {
@@ -111,6 +111,7 @@ public class Util {
 	public static Date domingoMaisProximo(Date dataDePublicacao) {
 		Date dataDomingo = null;
 		Calendar cal = Calendar.getInstance();
+		Log.i(LOG, dataDePublicacao.toString());
 		cal.setTime(dataDePublicacao);
 		int incremento = 1;
 		if (cal.get(Calendar.DAY_OF_WEEK) < Calendar.THURSDAY) {
