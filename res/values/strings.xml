@@ -16,6 +16,7 @@
     <string name="error_message_bad_url">Erro: URL inválida</string>
     <string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor</string>
     <string name="error_message_general">Erro de conexão</string>
+    <string name="error_no_pdf_application">Impossível abrir arquivo PDF</string>
     <string name="baixar">Baixar?</string>
     <string name="sim">Sim</string>
     <string name="n_o">Não</string>

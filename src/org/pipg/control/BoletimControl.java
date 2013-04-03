@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.pipg.beans.Boletim;
 import org.pipg.gui.PublicacoesGUI;
+import org.pipg.gui.PublicacoesHandler;
 import org.pipg.net.BoletimRepositorio;
 import org.pipg.net.DownloaderThread;
 import org.pipg.net.TrataConteudo;
@@ -54,7 +55,8 @@ public class BoletimControl {
 
 		/* Sinalizar o término do método para a activity */
 		Message msg = Message.obtain(parentActivity.activityHandler,
-				PublicacoesGUI.MESSAGE_TERMINOU_UPDATE, 0, 0, boletins);
+				PublicacoesHandler.MESSAGE_TERMINOU_UPDATE, 0, 0, boletins);
+		
 		parentActivity.activityHandler.sendMessage(msg);
 	}
 
@@ -69,7 +71,7 @@ public class BoletimControl {
 		bRep = new BoletimRepositorio(parentActivity);
 		int registrosApagados = bRep.limparBanco();
 		Message msg = Message.obtain(parentActivity.activityHandler,
-				PublicacoesGUI.MESSAGE_TERMINOU_LIMPAR, registrosApagados, 0);
+				PublicacoesHandler.MESSAGE_TERMINOU_LIMPAR, registrosApagados, 0);
 		File dirPadrao = new File(Util.ENDERECO_LOCAL);
 		if (dirPadrao.isDirectory()) {
 			Util.apagaDiretorio(dirPadrao);

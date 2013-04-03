@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.pipg.R;
 import org.pipg.gui.PublicacoesGUI;
+import org.pipg.gui.PublicacoesHandler;
 import org.pipg.utils.Util;
 
 import android.os.Message;
@@ -34,7 +35,7 @@ public class AbrirArquivoThread extends Thread {
 			if (sizeB > 0) {
 				int sizeKb = sizeB / 1024;
 				msg = Message.obtain(activityPai.activityHandler,
-						PublicacoesGUI.MESSAGE_CONFIRM_DOWNLOAD, sizeKb, 0,
+						PublicacoesHandler.MESSAGE_CONFIRM_DOWNLOAD, sizeKb, 0,
 						caminhoExterno);
 			} else {
 				throw new IOException();
@@ -43,7 +44,7 @@ public class AbrirArquivoThread extends Thread {
 			String errMsg = activityPai
 					.getString(R.string.error_message_general);
 			msg = Message.obtain(activityPai.activityHandler,
-					PublicacoesGUI.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
+					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
 		} finally {
 			activityPai.activityHandler.sendMessage(msg);
 		}

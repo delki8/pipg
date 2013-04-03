@@ -5,21 +5,16 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.jsoup.Connection;
 import org.pipg.R;
 import org.pipg.gui.PublicacoesGUI;
+import org.pipg.gui.PublicacoesHandler;
 import org.pipg.utils.Util;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Environment;
 import android.os.Message;
-import android.widget.Toast;
 
 public class DownloaderThread extends Thread {
 
@@ -78,14 +73,14 @@ public class DownloaderThread extends Thread {
 			if (!arquivoLocal.isFile()) {
 				// Iniciando a conexão aqui
 				msg = Message.obtain(parentActivity.activityHandler,
-						PublicacoesGUI.MESSAGE_CONNECTING_STARTED, 0, 0,
+						PublicacoesHandler.MESSAGE_CONNECTING_STARTED, 0, 0,
 						downloadUrl);
 				parentActivity.activityHandler.sendMessage(msg);
 
 				// Notificar à activity que o download iniciou.
 				int tamanhoArquivoEmKB = tamanhoArquivo / 1024;
 				msg = Message.obtain(parentActivity.activityHandler,
-						PublicacoesGUI.MESSAGE_DOWNLOAD_STARTED,
+						PublicacoesHandler.MESSAGE_DOWNLOAD_STARTED,
 						tamanhoArquivoEmKB, 0, nomeArquivo);
 				parentActivity.activityHandler.sendMessage(msg);
 
@@ -107,7 +102,7 @@ public class DownloaderThread extends Thread {
 					totalRead += bytesLidos;
 					int totalReadInKB = totalRead / 1024;
 					msg = Message.obtain(parentActivity.activityHandler,
-							PublicacoesGUI.MESSAGE_UPDATE_PROGRESS_BAR,
+							PublicacoesHandler.MESSAGE_UPDATE_PROGRESS_BAR,
 							totalReadInKB, 0);
 					parentActivity.activityHandler.sendMessage(msg);
 				}
@@ -123,7 +118,7 @@ public class DownloaderThread extends Thread {
 				} else {
 					// Notificar que terminou o download
 					msg = Message.obtain(parentActivity.activityHandler,
-							PublicacoesGUI.MESSAGE_DOWNLOAD_COMPLETE, 0, 0,
+							PublicacoesHandler.MESSAGE_DOWNLOAD_COMPLETE, 0, 0,
 							arquivoLocal);
 					parentActivity.activityHandler.sendMessage(msg);
 				}
@@ -131,7 +126,7 @@ public class DownloaderThread extends Thread {
 			} else {
 				// Notificar à activity que o arquivo existe.
 				msg = Message.obtain(parentActivity.activityHandler,
-						PublicacoesGUI.MESSAGE_ARQUIVO_EXISTE, 0, 0,
+						PublicacoesHandler.MESSAGE_ARQUIVO_EXISTE, 0, 0,
 						arquivoLocal);
 				parentActivity.activityHandler.sendMessage(msg);
 			}
@@ -139,19 +134,19 @@ public class DownloaderThread extends Thread {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_bad_url);
 			msg = Message.obtain(parentActivity.activityHandler,
-					PublicacoesGUI.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
+					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
 			parentActivity.activityHandler.sendMessage(msg);
 		} catch (FileNotFoundException e) {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_file_not_found);
 			msg = Message.obtain(parentActivity.activityHandler,
-					PublicacoesGUI.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
+					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
 			parentActivity.activityHandler.sendMessage(msg);
 		} catch (Exception e) {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_general);
 			msg = Message.obtain(parentActivity.activityHandler,
-					PublicacoesGUI.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
+					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
 			parentActivity.activityHandler.sendMessage(msg);
 		}
 	}
