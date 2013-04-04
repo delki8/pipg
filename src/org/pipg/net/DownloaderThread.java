@@ -72,17 +72,17 @@ public class DownloaderThread extends Thread {
 			File arquivoLocal = new File(Util.ENDERECO_LOCAL + nomeArquivo);
 			if (!arquivoLocal.isFile()) {
 				// Iniciando a conexão aqui
-				msg = Message.obtain(parentActivity.activityHandler,
+				msg = Message.obtain(PublicacoesGUI.activityHandler,
 						PublicacoesHandler.MESSAGE_CONNECTING_STARTED, 0, 0,
 						downloadUrl);
-				parentActivity.activityHandler.sendMessage(msg);
+				PublicacoesGUI.activityHandler.sendMessage(msg);
 
 				// Notificar à activity que o download iniciou.
 				int tamanhoArquivoEmKB = tamanhoArquivo / 1024;
-				msg = Message.obtain(parentActivity.activityHandler,
+				msg = Message.obtain(PublicacoesGUI.activityHandler,
 						PublicacoesHandler.MESSAGE_DOWNLOAD_STARTED,
 						tamanhoArquivoEmKB, 0, nomeArquivo);
-				parentActivity.activityHandler.sendMessage(msg);
+				PublicacoesGUI.activityHandler.sendMessage(msg);
 
 				// Iniciar o download
 				inStream = new BufferedInputStream(conn.getInputStream());
@@ -101,10 +101,10 @@ public class DownloaderThread extends Thread {
 					// Atualizar a barra de progresso
 					totalRead += bytesLidos;
 					int totalReadInKB = totalRead / 1024;
-					msg = Message.obtain(parentActivity.activityHandler,
+					msg = Message.obtain(PublicacoesGUI.activityHandler,
 							PublicacoesHandler.MESSAGE_UPDATE_PROGRESS_BAR,
 							totalReadInKB, 0);
-					parentActivity.activityHandler.sendMessage(msg);
+					PublicacoesGUI.activityHandler.sendMessage(msg);
 				}
 
 				outStream.close();
@@ -117,37 +117,37 @@ public class DownloaderThread extends Thread {
 					arquivoSaida.delete();
 				} else {
 					// Notificar que terminou o download
-					msg = Message.obtain(parentActivity.activityHandler,
+					msg = Message.obtain(PublicacoesGUI.activityHandler,
 							PublicacoesHandler.MESSAGE_DOWNLOAD_COMPLETE, 0, 0,
 							arquivoLocal);
-					parentActivity.activityHandler.sendMessage(msg);
+					PublicacoesGUI.activityHandler.sendMessage(msg);
 				}
 
 			} else {
 				// Notificar à activity que o arquivo existe.
-				msg = Message.obtain(parentActivity.activityHandler,
+				msg = Message.obtain(PublicacoesGUI.activityHandler,
 						PublicacoesHandler.MESSAGE_ARQUIVO_EXISTE, 0, 0,
 						arquivoLocal);
-				parentActivity.activityHandler.sendMessage(msg);
+				PublicacoesGUI.activityHandler.sendMessage(msg);
 			}
 		} catch (MalformedURLException e) {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_bad_url);
-			msg = Message.obtain(parentActivity.activityHandler,
+			msg = Message.obtain(PublicacoesGUI.activityHandler,
 					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
-			parentActivity.activityHandler.sendMessage(msg);
+			PublicacoesGUI.activityHandler.sendMessage(msg);
 		} catch (FileNotFoundException e) {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_file_not_found);
-			msg = Message.obtain(parentActivity.activityHandler,
+			msg = Message.obtain(PublicacoesGUI.activityHandler,
 					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
-			parentActivity.activityHandler.sendMessage(msg);
+			PublicacoesGUI.activityHandler.sendMessage(msg);
 		} catch (Exception e) {
 			String errMsg = parentActivity
 					.getString(R.string.error_message_general);
-			msg = Message.obtain(parentActivity.activityHandler,
+			msg = Message.obtain(PublicacoesGUI.activityHandler,
 					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
-			parentActivity.activityHandler.sendMessage(msg);
+			PublicacoesGUI.activityHandler.sendMessage(msg);
 		}
 	}
 }

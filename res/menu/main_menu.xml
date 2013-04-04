@@ -9,12 +9,12 @@
                 android:id="@+id/menu_refresh_recentes"
                 android:icon="@drawable/av_download"
                 android:showAsAction="always"
-                android:title="Recentes"/>
+                android:title="@string/mn_recentes"/>
             <item
                 android:id="@+id/menu_refresh_todos"
                 android:icon="@drawable/av_download"
                 android:showAsAction="always"
-                android:title="Todos"/>
+                android:title="@string/mn_todos"/>
         </menu>
     </item>
     <item
@@ -22,7 +22,7 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="Limpar"/>
+        android:title="@string/btn_limpar"/>
 <!--     <item
         android:id="@+id/menu_inserir"
         android:icon="@drawable/collectionsviewaslist"
@@ -34,6 +34,6 @@
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_info_details"
         android:showAsAction="never"
-        android:title="Sobre"/>
+        android:title="@string/btn_sobre"/>
 
 </menu>

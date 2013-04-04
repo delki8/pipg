@@ -69,7 +69,7 @@ public class BoletimControl {
 	public void limparBoletins(PublicacoesGUI parentActivity) {
 		bRep = new BoletimRepositorio(parentActivity);
 		int registrosApagados = bRep.limparBanco();
-		Message msg = Message.obtain(parentActivity.activityHandler,
+		Message msg = Message.obtain(PublicacoesGUI.activityHandler,
 				PublicacoesHandler.MESSAGE_TERMINOU_LIMPAR, registrosApagados, 0);
 		File dirPadrao = new File(Util.ENDERECO_LOCAL);
 		if (dirPadrao.isDirectory()) {

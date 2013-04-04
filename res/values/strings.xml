@@ -39,6 +39,10 @@
         que está em Cristo Jesus, nosso Senhor.\" Romanos 8:38-39 
         </i>	</string>
        <string name="desenvolvido_por">Desenvolvido por:</string>
-       <string name="descricao_label">Descrição:</string>	
+       <string name="descricao_label">Descrição:</string>
+       <string name="btn_limpar">Limpar</string>
+       <string name="mn_todos">Todos</string>
+       <string name="mn_recentes">Recentes</string>
+       <string name="btn_sobre">Sobre</string>	
 
 </resources>

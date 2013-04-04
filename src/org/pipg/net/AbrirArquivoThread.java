@@ -34,7 +34,7 @@ public class AbrirArquivoThread extends Thread {
 			int sizeB = Util.tamanhoArquivo(caminhoExterno);
 			if (sizeB > 0) {
 				int sizeKb = sizeB / 1024;
-				msg = Message.obtain(activityPai.activityHandler,
+				msg = Message.obtain(PublicacoesGUI.activityHandler,
 						PublicacoesHandler.MESSAGE_CONFIRM_DOWNLOAD, sizeKb, 0,
 						caminhoExterno);
 			} else {
@@ -43,10 +43,10 @@ public class AbrirArquivoThread extends Thread {
 		} catch (IOException e) {
 			String errMsg = activityPai
 					.getString(R.string.error_message_general);
-			msg = Message.obtain(activityPai.activityHandler,
+			msg = Message.obtain(PublicacoesGUI.activityHandler,
 					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
 		} finally {
-			activityPai.activityHandler.sendMessage(msg);
+			PublicacoesGUI.activityHandler.sendMessage(msg);
 		}
 	}
 }

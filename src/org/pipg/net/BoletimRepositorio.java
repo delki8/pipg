@@ -46,6 +46,13 @@ public class BoletimRepositorio {
 				BoletimRepositorio.SCRIPT_DATABASE_CREATE,
 				BoletimRepositorio.SCRIPT_DATABASE_DELETE);
 		
+		if (db != null) {
+			if (db.isOpen()) {
+				db.close();
+			}
+			db = null;
+		}
+		
 		db = dbHelper.getWritableDatabase();
 	}
 	

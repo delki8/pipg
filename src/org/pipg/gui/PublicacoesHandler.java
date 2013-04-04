@@ -52,8 +52,8 @@ public class PublicacoesHandler extends Handler {
 	public PublicacoesHandler(PublicacoesGUI activity,
 			ArrayList<Boletim> boletins, BoletimAdapter adapter) {
 		this.thisActivity = activity;
-		this.boletins = boletins;
-		this.adapter = adapter;
+		PublicacoesHandler.boletins = boletins;
+		PublicacoesHandler.adapter = adapter;
 		this.progressDialog = activity.progressDialog;
 	}
 	
