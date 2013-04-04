@@ -6,36 +6,37 @@ import org.pipg.R;
 import org.pipg.beans.Boletim;
 import org.pipg.control.BoletimControl;
 import org.pipg.net.BoletimRepositorio;
+import org.pipg.net.DownloaderThread;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class PublicacoesGUI extends FragmentActivity implements
-		ActionBar.TabListener {
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class PublicacoesGUI extends SherlockFragmentActivity {
 
 	private static BoletimAdapter adapter;
 	private static ListView lista;
 	private static ArrayList<Boletim> boletins;
 	private static PublicacoesGUI thisActivity;
-	private static ProgressDialog progressDialog;
 
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
 
+	ProgressDialog progressDialog;
 	
 	/**
 	 * This is the Handler for this activity. It will receive messages from the
@@ -50,91 +51,46 @@ public class PublicacoesGUI extends FragmentActivity implements
 		thisActivity = this;
 		progressDialog = null;
 
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
-
-		final ActionBar actionBar = getActionBar();
-		// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(thisActivity));
-		}
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setLogo(R.drawable.ic_launcher);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_action_gui, menu);
+		MenuInflater menuInflater = getSupportMenuInflater();
+		menuInflater.inflate(R.menu.main_menu, menu);
+		
 		return true;
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
 	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the primary sections of the app.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+	public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+		
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
-		}
+        }
 
-		@Override
-		public Fragment getItem(int i) {
+        @Override
+        public int getCount() {
+            return 1;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
 			Fragment fragment = new SectionFragment();
 			Bundle args = new Bundle();
-			args.putInt(SectionFragment.ARG_SECTION_NUMBER, i + 1);
+			args.putInt(SectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			// return 3;
-			return 1;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case 0:
-				return getString(R.string.title_boletins).toUpperCase();
-			case 1:
-				return getString(R.string.title_audios).toUpperCase();
-			case 2:
-				return getString(R.string.title_videos).toUpperCase();
-			}
-			return null;
-		}
+        }
 	}
 
 	@Override
@@ -201,7 +157,7 @@ public class PublicacoesGUI extends FragmentActivity implements
 			
 			// Instancia o handler que vai manipular a tela.
 			activityHandler = new PublicacoesHandler(thisActivity, boletins,
-					adapter, progressDialog);
+					adapter);
 
 			return lista;
 		}

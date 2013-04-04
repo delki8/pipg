@@ -11,7 +11,6 @@ import org.pipg.net.DownloaderThread;
 import org.pipg.net.TrataConteudo;
 import org.pipg.utils.Util;
 
-import android.app.Activity;
 import android.os.Message;
 
 public class BoletimControl {
@@ -54,10 +53,10 @@ public class BoletimControl {
 		bRep.inserir(boletins);
 
 		/* Sinalizar o término do método para a activity */
-		Message msg = Message.obtain(parentActivity.activityHandler,
+		Message msg = Message.obtain(PublicacoesGUI.activityHandler,
 				PublicacoesHandler.MESSAGE_TERMINOU_UPDATE, 0, 0, boletins);
 		
-		parentActivity.activityHandler.sendMessage(msg);
+		PublicacoesGUI.activityHandler.sendMessage(msg);
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class BoletimControl {
 		if (dirPadrao.isDirectory()) {
 			Util.apagaDiretorio(dirPadrao);
 		}
-		parentActivity.activityHandler.sendMessage(msg);
+		PublicacoesGUI.activityHandler.sendMessage(msg);
 	}
 
 	public void iniciarDownload(PublicacoesGUI activityPai,

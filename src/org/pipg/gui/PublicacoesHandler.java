@@ -43,19 +43,18 @@ public class PublicacoesHandler extends Handler {
 	public static final int MESSAGE_CONFIRM_DOWNLOAD = 1009;
 	public static final int MESSAGE_NO_PDF_APPLICATION = 1010;
 	
-	private static PublicacoesGUI thisActivity;
+	private PublicacoesGUI thisActivity;
 	private static ArrayList<Boletim> boletins;
 	private static BoletimAdapter adapter;
 	
 	private ProgressDialog progressDialog;
 	
 	public PublicacoesHandler(PublicacoesGUI activity,
-			ArrayList<Boletim> boletins, BoletimAdapter adapter,
-			ProgressDialog pDialog) {
+			ArrayList<Boletim> boletins, BoletimAdapter adapter) {
 		this.thisActivity = activity;
 		this.boletins = boletins;
 		this.adapter = adapter;
-		this.progressDialog = pDialog;
+		this.progressDialog = activity.progressDialog;
 	}
 	
 	public void handleMessage(Message msg) {
