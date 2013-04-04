@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pipg"
-    android:versionCode="10002"
+    android:versionCode="10100"
     android:versionName="@string/versao" >
 
     <uses-sdk
