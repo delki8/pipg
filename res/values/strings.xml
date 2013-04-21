@@ -15,14 +15,15 @@
     <string name="user_message_download_canceled">Download cancelado</string>
     <string name="error_message_bad_url">Erro: URL inválida</string>
     <string name="error_message_file_not_found">Erro: Arquivo não encontrado no servidor</string>
-    <string name="error_message_general">Erro de conexão</string>
+    <string name="error_connection">Erro de conexão</string>
+    <string name="error_message_general">Erro inesperado (inesperado mas aqui está você, lendo esta mensagem...)</string>
     <string name="error_no_pdf_application">Impossível abrir arquivo PDF</string>
     <string name="baixar">Baixar?</string>
     <string name="sim">Sim</string>
     <string name="n_o">Não</string>
 
     <!-- Informações para o "Sobre" -->
-    <string name="versao">1.1.0</string>
+    <string name="versao">1.1.1</string>
     <string name="dev_1">Ruither Borba: delki8\@gmail.com</string>
     <string name="dev_2">Eric Kriger: erickriger\@gmail.com</string>
     <string name="sobre_app">

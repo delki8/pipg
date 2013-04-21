@@ -42,6 +42,11 @@ public class AbrirArquivoThread extends Thread {
 			}
 		} catch (IOException e) {
 			String errMsg = activityPai
+					.getString(R.string.error_connection);
+			msg = Message.obtain(PublicacoesGUI.activityHandler,
+					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);
+		} catch (Exception e) {
+			String errMsg = activityPai
 					.getString(R.string.error_message_general);
 			msg = Message.obtain(PublicacoesGUI.activityHandler,
 					PublicacoesHandler.MESSAGE_ENCOUNTERED_ERROR, 0, 0, errMsg);

@@ -129,13 +129,8 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class SectionFragment extends Fragment { // implements
-															// OnItemClickListener
-															// {
+	public static class SectionFragment extends Fragment { 
+
 		public SectionFragment() {
 		};
 

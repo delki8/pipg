@@ -178,8 +178,8 @@ public class Util {
 	 *            é a url de download do arquivo que será calculado.
 	 * */
 	public static int tamanhoArquivo(String urlDownload) throws IOException {
-		URL url = new URL(urlDownload);
-		URLConnection conn = url.openConnection();
+		final URL url = new URL(urlDownload);
+		final URLConnection conn = url.openConnection();
 		int tamanhoArquivo = conn.getContentLength();
 		return tamanhoArquivo;
 	}
