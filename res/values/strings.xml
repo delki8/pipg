@@ -10,6 +10,9 @@
     <string name="progress_dialog_title_downloading">Baixando...</string>
     <string name="progress_dialog_title_connecting">Conectando...</string>
     <string name="progress_dialog_message_prefix_downloading">Baixando arquivo...</string>
+    <string name="user_message_update_list">Atualizando lista...</string>
+    <string name="user_info_update_last_10">Últimos 10 boletins</string>
+    <string name="user_info_update_all_of_them">Todos os boletins. Deve demorar um bocado...</string>
     <string name="progress_dialog_message_prefix_connecting">Conectando em: </string>
     <string name="user_message_download_complete">Download completo</string>
     <string name="user_message_download_canceled">Download cancelado</string>

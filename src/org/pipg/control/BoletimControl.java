@@ -27,10 +27,14 @@ public class BoletimControl {
 	 * @param parentActivity
 	 *            a activity que está atualizando os boletins.
 	 * */
-	public void atualizaBoletins(Boolean atualizacaoCompleta,
-			PublicacoesGUI parentActivity) {
+	public void atualizaBoletins(Boolean atualizacaoCompleta, PublicacoesGUI parentActivity) {
 		bRep = new BoletimRepositorio(parentActivity);
 		ArrayList<Boletim> boletins = new ArrayList<Boletim>();
+
+		// Sinaliza para a activity que a atualização foi iniciada
+		Message msg = Message.obtain(PublicacoesGUI.activityHandler, PublicacoesHandler.MESSAGE_INICIOU_UPDATE,
+				atualizacaoCompleta);
+		PublicacoesGUI.activityHandler.sendMessage(msg);
 
 		if (!atualizacaoCompleta) {
 			String url = "http://pipg.org/index.cfm?p=bulletins";
@@ -40,8 +44,7 @@ public class BoletimControl {
 			Integer nPagina = 1;
 			while (euDevoContinuarBuscando) {
 				String url = Util.URL_ATUALIZACAO_PARCIAL + "&d=" + nPagina;
-				ArrayList<Boletim> boletinsTemp = TrataConteudo
-						.pegarListaBoletim(url);
+				ArrayList<Boletim> boletinsTemp = TrataConteudo.pegarListaBoletim(url);
 				if (boletinsTemp != null && boletinsTemp.size() > 0) {
 					boletins.addAll(boletinsTemp);
 				} else {
@@ -53,9 +56,9 @@ public class BoletimControl {
 		bRep.inserir(boletins);
 
 		/* Sinalizar o término do método para a activity */
-		Message msg = Message.obtain(PublicacoesGUI.activityHandler,
-				PublicacoesHandler.MESSAGE_TERMINOU_UPDATE, 0, 0, boletins);
-		
+		msg = Message
+				.obtain(PublicacoesGUI.activityHandler, PublicacoesHandler.MESSAGE_TERMINOU_UPDATE, 0, 0, boletins);
+
 		PublicacoesGUI.activityHandler.sendMessage(msg);
 	}
 
@@ -69,8 +72,8 @@ public class BoletimControl {
 	public void limparBoletins(PublicacoesGUI parentActivity) {
 		bRep = new BoletimRepositorio(parentActivity);
 		int registrosApagados = bRep.limparBanco();
-		Message msg = Message.obtain(PublicacoesGUI.activityHandler,
-				PublicacoesHandler.MESSAGE_TERMINOU_LIMPAR, registrosApagados, 0);
+		Message msg = Message.obtain(PublicacoesGUI.activityHandler, PublicacoesHandler.MESSAGE_TERMINOU_LIMPAR,
+				registrosApagados, 0);
 		File dirPadrao = new File(Util.ENDERECO_LOCAL);
 		if (dirPadrao.isDirectory()) {
 			Util.apagaDiretorio(dirPadrao);
@@ -78,10 +81,8 @@ public class BoletimControl {
 		PublicacoesGUI.activityHandler.sendMessage(msg);
 	}
 
-	public void iniciarDownload(PublicacoesGUI activityPai,
-			String caminhoExterno) {
-		DownloaderThread dThread = new DownloaderThread(activityPai,
-				caminhoExterno);
+	public void iniciarDownload(PublicacoesGUI activityPai, String caminhoExterno) {
+		DownloaderThread dThread = new DownloaderThread(activityPai, caminhoExterno);
 		dThread.start();
 	}
 }

@@ -10,7 +10,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.pipg.R;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class Util {
@@ -87,7 +93,8 @@ public class Util {
 	 * @return Data referente ao formato personalizado ou null caso não seja
 	 *         possível formatar.
 	 * */
-	public static Date formatDateCustom(String dataString, String formato, Locale local) {
+	public static Date formatDateCustom(String dataString, String formato,
+			Locale local) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(formato, local);
 			Date dataRetorno = sdf.parse(dataString);
@@ -182,5 +189,18 @@ public class Util {
 		final URLConnection conn = url.openConnection();
 		int tamanhoArquivo = conn.getContentLength();
 		return tamanhoArquivo;
+	}
+
+	/**
+	 * @return true se houver conexão com a internet.
+	 * */
+	public static boolean isOnline(Context c) {
+		ConnectivityManager cm = (ConnectivityManager) c
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnected()) {
+			return true;
+		}
+		return false;
 	}
 }

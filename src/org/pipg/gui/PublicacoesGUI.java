@@ -36,23 +36,23 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
 
-	ProgressDialog progressDialog;
-	
+	private ProgressDialog progressDialog;
+
 	/**
 	 * This is the Handler for this activity. It will receive messages from the
 	 * {@link DownloaderThread} and make the necessary updates to the UI.
 	 * */
 	public static PublicacoesHandler activityHandler;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gui);
 		thisActivity = this;
-		progressDialog = null;
+		this.setProgressDialog(null);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-		
+
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -64,7 +64,7 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getSupportMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
-		
+
 		return true;
 	}
 
@@ -73,24 +73,24 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 	 * one of the primary sections of the app.
 	 */
 	public static class SectionsPagerAdapter extends FragmentPagerAdapter {
-		
+
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
-        }
+		}
 
-        @Override
-        public int getCount() {
-            return 1;
-        }
+		@Override
+		public int getCount() {
+			return 1;
+		}
 
-        @Override
-        public Fragment getItem(int position) {
+		@Override
+		public Fragment getItem(int position) {
 			Fragment fragment = new SectionFragment();
 			Bundle args = new Bundle();
 			args.putInt(SectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
-        }
+		}
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public static class SectionFragment extends Fragment { 
+	public static class SectionFragment extends Fragment {
 
 		public SectionFragment() {
 		};
@@ -138,23 +138,28 @@ public class PublicacoesGUI extends SherlockFragmentActivity {
 		public static final int ID_MAIN_LIST = 2000;
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-			BoletimRepositorio bRepositorio = new BoletimRepositorio(
-					getActivity());
+			BoletimRepositorio bRepositorio = new BoletimRepositorio(getActivity());
 			boletins = bRepositorio.listarBoletins();
 
 			adapter = new BoletimAdapter(thisActivity, boletins);
 			lista = new ListView(getActivity());
 			lista.setId(ID_MAIN_LIST);
 			lista.setAdapter(adapter);
-			
+
 			// Instancia o handler que vai manipular a tela.
-			activityHandler = new PublicacoesHandler(thisActivity, boletins,
-					adapter);
+			activityHandler = new PublicacoesHandler(thisActivity, boletins, adapter);
 
 			return lista;
 		}
+	}
+
+	public ProgressDialog getProgressDialog() {
+		return progressDialog;
+	}
+
+	public void setProgressDialog(ProgressDialog progressDialog) {
+		this.progressDialog = progressDialog;
 	}
 }

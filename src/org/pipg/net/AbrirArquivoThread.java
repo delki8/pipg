@@ -31,7 +31,10 @@ public class AbrirArquivoThread extends Thread {
 	public void run() {
 		Message msg = null;
 		try {
-			int sizeB = Util.tamanhoArquivo(caminhoExterno);
+			int sizeB = 0;
+			if (Util.isOnline(activityPai)) {
+				sizeB = Util.tamanhoArquivo(caminhoExterno);
+			}
 			if (sizeB > 0) {
 				int sizeKb = sizeB / 1024;
 				msg = Message.obtain(PublicacoesGUI.activityHandler,
